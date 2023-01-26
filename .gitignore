@@ -1,3 +1,7 @@
+# Dont want to upload our database every time
+*.db
+
+# Python default .gitignore
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
