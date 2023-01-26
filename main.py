@@ -7,14 +7,13 @@ from sqlite3 import Error
 
 
 def init_db():
-    print(len('barnetomatthew@gmail.com'))
     conn = None
     try:
         # Get our db connection
         conn = sqlite3.connect('storage.db')
         # Create our tables if they don't already exist
         # TODO: figure out length limits and fix data type/***attributes***
-        conn.execute("""CREATE TABLE users (
+        conn.execute("""CREATE TABLE IF NOT EXISTS users (
             user_id INT NOT NULL PRIMARY KEY,
             username CHAR[32],
             password CHAR[32],
@@ -24,7 +23,7 @@ def init_db():
             semester CHAR[32]);
         """)
 
-        conn.execute("""CREATE TABLE courses (
+        conn.execute("""CREATE TABLE IF NOT EXISTS courses (
             course_id INT NOT NULL PRIMARY KEY,
             name CHAR[32],
             section CHAR[32],
@@ -35,7 +34,7 @@ def init_db():
         """)
 
         # Shouldn't weight just be based on the type of assignment?
-        conn.execute("""CREATE TABLE assignments (
+        conn.execute("""CREATE TABLE IF NOT EXISTS assignments (
             assignment_id INT NOT NULL PRIMARY KEY,
             course_id INT,
             name CHAR[32],
@@ -48,7 +47,7 @@ def init_db():
             notification_id INT);
         """)
 
-        conn.execute("""CREATE TABLE subassignments (
+        conn.execute("""CREATE TABLE IF NOT EXISTS subassignments (
             subassignment_id INT NOT NULL PRIMARY KEY,
             assignment_id INT,
             name CHAR[32],
@@ -59,7 +58,7 @@ def init_db():
             notification_id INT);
         """)
         
-        conn.execute("""CREATE TABLE notifications (
+        conn.execute("""CREATE TABLE IF NOT EXISTS notifications (
             notification_id INT NOT NULL PRIMARY KEY,
             message TEXT,
             delivery_method INT,
