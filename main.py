@@ -5,6 +5,8 @@ from starlette.routing import Route
 import sqlite3
 from sqlite3 import Error
 
+from database.models.UserModel import UserModel
+
 
 def init_db():
     conn = None
@@ -14,8 +16,8 @@ def init_db():
         # Create our tables if they don't already exist
         # TODO: figure out length limits and fix data type/***attributes***
         conn.execute("""CREATE TABLE IF NOT EXISTS users (
-            user_id INT NOT NULL PRIMARY KEY,
-            username CHAR[32],
+            user_id INT PRIMARY KEY,
+            username CHAR[32] UNIQUE,
             password CHAR[32],
             email CHAR[255],
             phone_number CHAR[32],
@@ -73,6 +75,21 @@ def init_db():
         if conn:
             conn.close()
 
+def populate_db():
+    conn = None
+    try:
+        conn = sqlite3.connect('storage.db')
+        conn.execute('''
+            INSERT INTO 
+            users(user_id, username, password, email, phone_number, degree, semester) 
+            VALUES(?,?,?,?,?,?,?)
+        ''', (0, 'mbarneto', '1234', 'email@gmail.com', '9198675309', 'programming', 'SPR 2023'))
+        conn.commit()
+    except Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
 
 async def homepage(request):
     return JSONResponse({'hello': 'world'})
@@ -84,6 +101,10 @@ async def post_req(req):
     return JSONResponse({'cccc': 'ddddddd'})
 
 init_db()
+populate_db()
+user = UserModel.from_username('mbarneto')
+print(user)
+
 
 app = Starlette(debug=True, routes=[
     Route('/', homepage),
