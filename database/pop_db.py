@@ -21,7 +21,7 @@ def populate():
         emails = [''.join(random.choice([chr(value) for value in range(ord('a'), ord('a') + 26)]) for _ in range(7)) + '@gmail.com' for _ in range(NUM_ENTRIES)]
         
         # generate a random 919 phone number and add to phone_numbers list, do NUM_ENTRIES times
-        phone_numbers = ['919' + ''.join(random.choice([str(i) for i in range(1, 9)]) for _ in range(6)) for _ in range(NUM_ENTRIES)]
+        phone_numbers = ['919' + ''.join(random.choice([str(i) for i in range(1, 9)]) for _ in range(7)) for _ in range(NUM_ENTRIES)]
         
         degree_list = ['programming', 'business', 'music', 'data science', 'cybersecurity']
         degrees = [random.choice(degree_list) for _ in range(NUM_ENTRIES)]
