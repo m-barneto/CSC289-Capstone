@@ -1,7 +1,11 @@
 from assignment import Assignment
 
 
-# Manager model for handling all assignments added by the user.
+""" Manager model for handling all assignments added by the user.
+* Ideally, the user would create an assignment, then add it to the list.
+* The list then would sync with the database.
+* @todo: Add database interaction either through function parameters or
+*        a member variable. """
 class AssignmentManager:
 
     # Parameter: in_assignments = list of assignment type.
@@ -32,7 +36,6 @@ class AssignmentManager:
 
     # Overloaded version to allow passing assignment_id.
     def remove_assignment_from_id(self, id):
-        self._assignments[id].on_removed()
         del self._assignments[id]
 
     # Returns all assignments that are internally marked as completed.
