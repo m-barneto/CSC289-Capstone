@@ -14,11 +14,12 @@ class AssignmentManager:
         self._assignments = in_assignments
 
     # Utility for creating assignments
-    def create_assignment(self, assignment_id, course_id=None, name=None, type=None, weight=None, priority=None, completed=None, due=None, recurring=None, notification_id=None):
+    def create_assignment(self, assignment_id, course_id=None, name=None, desc=None, type=None, weight=None, priority=None, completed=None, due=None, recurring=None, notification_id=None):
         return Assignment(assignment_id,
                           course_id,
                           name,
                           type,
+                          desc,
                           weight,
                           priority,
                           completed,
@@ -28,8 +29,8 @@ class AssignmentManager:
 
     """ Function for user to add additional assignments.
     * @todo: Add connnection to database; something like...
-        INSERT INTO assignments(assignment_id, course_id, name, type, weight, priority, completed, due, recurring, notification_id) 
-        VALUES(in_asignment.get_id(),in_asignment.get_course_id(),in_asignment.get_name(),in_asignment.get_type(),in_asignment.get_weight(),in_asignment.get_priority(),in_asignment.get_completed(),in_asignment.get_due(),in_asignment.get_recurring(),in_asignment.get_notification_id());
+        INSERT INTO assignments(assignment_id, course_id, name, desc, type, weight, priority, completed, due, recurring, notification_id) 
+        VALUES(in_asignment.get_id(),in_asignment.get_course_id(),in_asignment.get_name(), in_assignment.get_desc(), in_asignment.get_type(),in_asignment.get_weight(),in_asignment.get_priority(),in_asignment.get_completed(),in_asignment.get_due(),in_asignment.get_recurring(),in_asignment.get_notification_id());
          """
     def add_assignment(self, in_assignment):
         self._assignments.append(in_assignment)
@@ -66,7 +67,7 @@ class AssignmentManager:
     # Exports assignments to csv file
     def export_assignments(self, filename):
         with open(filename, 'w', newline='') as csvfile:
-            fieldnames = ['assignment_id', 'course_id', 'name', 'type', 'weight', 'priority', 'completed', 'due', 'recurring', 'notification_id']
+            fieldnames = ['assignment_id', 'course_id', 'name', 'desc', 'type', 'weight', 'priority', 'completed', 'due', 'recurring', 'notification_id']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             # todo: integrate with database
@@ -74,6 +75,7 @@ class AssignmentManager:
             #   writer.writerow({'assignment_id': assignment.get_id(),
             #                   'course_id': assignment.get_course_id(),
             #                   'name': assignment.get_name(),
+            #                   'desc': assignment.get_desc(),
             #                   'type': assignment.get_type(),
             #                   'weight': assignment.get_weight(),
             #                   'priority': assignment.get_priority(),
