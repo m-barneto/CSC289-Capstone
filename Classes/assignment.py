@@ -14,7 +14,7 @@ class Assignment:
         self._id                = assignment_id
         self._course_id         = course_id
         self._name              = name
-        self._desc               = desc
+        self._desc              = desc
         self._type              = type,
         self._weight            = weight
         self._priority          = priority
