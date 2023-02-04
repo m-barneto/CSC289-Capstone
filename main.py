@@ -7,6 +7,7 @@ from sqlite3 import Error
 
 from database.models.UserModel import UserModel
 
+from database.pop_db import populate
 
 def init_db():
     conn = None
@@ -84,6 +85,7 @@ def populate_db():
             users(user_id, username, password, email, phone_number, degree, semester) 
             VALUES(?,?,?,?,?,?,?)
         ''', (0, 'mbarneto', '1234', 'email@gmail.com', '9198675309', 'programming', 'SPR 2023'))
+        
         conn.commit()
     except Error as e:
         print(e)
@@ -101,7 +103,8 @@ async def post_req(req):
     return JSONResponse({'cccc': 'ddddddd'})
 
 init_db()
-populate_db()
+populate()
+#populate_db()
 user = UserModel.from_username('mbarneto')
 print(user)
 
