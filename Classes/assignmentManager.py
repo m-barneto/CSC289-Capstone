@@ -1,4 +1,5 @@
 from assignment import Assignment
+import csv
 
 
 """ Manager model for handling all assignments added by the user.
@@ -63,5 +64,21 @@ class AssignmentManager:
         in_assignment.set_recurring(repeats)
 
     # Exports assignments to csv file
-    def export_assignments(self):
-        pass
+    def export_assignments(self, filename):
+        with open(filename, 'w', newline='') as csvfile:
+            fieldnames = ['assignment_id', 'course_id', 'name', 'type', 'weight', 'priority', 'completed', 'due', 'recurring', 'notification_id']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            # todo: integrate with database
+            # for assignment in database:
+            #   writer.writerow({'assignment_id': assignment.get_id(),
+            #                   'course_id': assignment.get_course_id(),
+            #                   'name': assignment.get_name(),
+            #                   'type': assignment.get_type(),
+            #                   'weight': assignment.get_weight(),
+            #                   'priority': assignment.get_priority(),
+            #                   'completed': assignment.get_completed(),
+            #                   'due': assignment.get_due(),
+            #                   'recurring': assignment.get_recurring(),
+            #                   'notification_id': assignment.get_notification_id})
+
