@@ -25,7 +25,11 @@ class AssignmentManager:
                           recurring,
                           notification_id)
 
-    # Function for user to add additional assignments.
+    """ Function for user to add additional assignments.
+    * @todo: Add connnection to database; something like...
+        INSERT INTO assignments(assignment_id, course_id, name, type, weight, priority, completed, due, recurring, notification_id) 
+        VALUES(in_asignment.get_id(),in_asignment.get_course_id(),in_asignment.get_name(),in_asignment.get_type(),in_asignment.get_weight(),in_asignment.get_priority(),in_asignment.get_completed(),in_asignment.get_due(),in_asignment.get_recurring(),in_asignment.get_notification_id());
+         """
     def add_assignment(self, in_assignment):
         self._assignments.append(in_assignment)
 
@@ -49,7 +53,12 @@ class AssignmentManager:
     """ Sends a message to assignment to change to repeating (recurring)
     * Parameters:
     *   in_assignment = assignment to change
-    *   repeats       = boolean value to change assignment.recurring to """
+    *   repeats       = boolean value to change assignment.recurring to 
+    *
+    * #todo: Add connection to database; something like...
+     ALTER_TABLE 
+        WHERE
+            assignment_id = in_assignment.id;"""
     def set_repeating_assignment(self, in_assignment, repeats):
         in_assignment.set_recurring(repeats)
 
