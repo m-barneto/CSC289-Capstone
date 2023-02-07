@@ -1,6 +1,8 @@
 # Create the virtualenv named venv
 python -m venv .venv
 
+# Figure out how to activate the venv depending on your OS
+
 # Install the packages from the requirements.txt into the venv
 pip install -r requirements.txt
 
