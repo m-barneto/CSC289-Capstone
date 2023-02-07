@@ -1,3 +1,5 @@
+import datetime
+
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.routing import Route
@@ -124,3 +126,49 @@ def create_class():
     con = sqlite3.connect('storage.db')
     query = courseId, className, section, professor_name, online, dropped, color
     con.execute("INSERT INTO courses VALUES(?, ?, ?, ?, ?, ?, ?)", query)
+    con.commit()
+
+def create_assignment():
+    int assignmentId = 0
+    int courseId = 0
+    str name = ""
+    str type = ""
+    str weight = ""
+    int priority = 0
+    bool completed = False
+    due = datetime.today()
+    bool recurring = False
+    int notificationId = 0
+    #Insert links to HTML input here
+    con = sqlite3.connect('storage.db')
+    query = assignmentId, courseId, name, type, weight, priority, completed, due, recurring, notificationId
+    con.execute("INSERT INTO assignments VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", query)
+    con.commit()
+
+def create_subassignment():
+    int subassignmentId = 0
+    int assignmentId = 0
+    str name = ""
+    str desc =""
+    bool completed = False
+    due = datetime.today()
+    bool recurring = False
+    int notificationId = 0
+    #Insert links to HTML input here
+    con = sqlite3.connect('storage.db')
+    query = subassignmentId, assignmentId, name, desc, completed, due, recurring, notificationId
+    con.execute("INSERT INTO subassignment VALUES(?, ?, ?, ?, ?, ?, ?, ?)", query)
+    con.commit()
+
+def create_notification():
+    int notificationId = 0
+    str message = ""
+    int deliveryMethod = 0
+    sendAt = datetime.today()
+    int assignmentId = 0
+    int subassignmentId = 0
+    #Insert links to HTML input here
+    con = sqlite3.connect('storage.db')
+    query = notificationId, message, deliveryMethod, sendAt, assignmentId, subassignmentId
+    con.execute("INSERT INTO courses VALUES(?, ?, ?, ?, ?, ?)", query)
+    con.commit()
