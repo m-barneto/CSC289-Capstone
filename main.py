@@ -111,3 +111,16 @@ app = Starlette(debug=True, routes=[
     Route('/req', endpoint=post_req, methods=['POST']),
     Route('/req', endpoint=get_req, methods=['GET'])
 ])
+
+def create_class():
+    int courseId = 0
+    str className = ""
+    str section = ""
+    str professor_name = ""
+    bool online = False
+    bool dropped = False
+    str color = ""
+    #Insert links to HTML input here
+    con = sqlite3.connect('storage.db')
+    query = courseId, className, section, professor_name, online, dropped, color
+    con.execute("INSERT INTO courses VALUES(?, ?, ?, ?, ?, ?, ?)", query)
