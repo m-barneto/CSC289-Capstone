@@ -61,7 +61,7 @@ def init_db():
             recurring BOOL,
             notification_id INT);
         """)
-        
+
         conn.execute("""CREATE TABLE IF NOT EXISTS notifications (
             notification_id INT NOT NULL PRIMARY KEY,
             message TEXT,
@@ -76,6 +76,7 @@ def init_db():
     finally:
         if conn:
             conn.close()
+
 
 def populate_db():
     conn = None
@@ -93,20 +94,23 @@ def populate_db():
         if conn:
             conn.close()
 
+
 async def homepage(request):
     return JSONResponse({'hello': 'world'})
+
 
 async def get_req(req):
     return JSONResponse({'aaaaaa': 'bbbbbbbbb'})
 
+
 async def post_req(req):
     return JSONResponse({'cccc': 'ddddddd'})
+
 
 init_db()
 populate_db()
 user = UserModel.from_username('mbarneto')
 print(user)
-
 
 app = Starlette(debug=True, routes=[
     Route('/', homepage),
@@ -114,60 +118,64 @@ app = Starlette(debug=True, routes=[
     Route('/req', endpoint=get_req, methods=['GET'])
 ])
 
+
 def create_class():
-    int courseId = 0
-    str className = ""
-    str section = ""
-    str professor_name = ""
-    bool online = False
-    bool dropped = False
-    str color = ""
-    #Insert links to HTML input here
+    courseId = 0
+    className = ""
+    section = ""
+    professor_name = ""
+    online = False
+    dropped = False
+    color = ""
+    # Insert links to HTML input here
     con = sqlite3.connect('storage.db')
     query = courseId, className, section, professor_name, online, dropped, color
     con.execute("INSERT INTO courses VALUES(?, ?, ?, ?, ?, ?, ?)", query)
     con.commit()
 
+
 def create_assignment():
-    int assignmentId = 0
-    int courseId = 0
-    str name = ""
-    str type = ""
-    str weight = ""
-    int priority = 0
-    bool completed = False
+    assignmentId = 0
+    courseId = 0
+    name = ""
+    type1 = ""
+    weight = ""
+    priority = 0
+    completed = False
     due = datetime.today()
-    bool recurring = False
-    int notificationId = 0
-    #Insert links to HTML input here
+    recurring = False
+    notificationId = 0
+    # Insert links to HTML input here
     con = sqlite3.connect('storage.db')
-    query = assignmentId, courseId, name, type, weight, priority, completed, due, recurring, notificationId
+    query = assignmentId, courseId, name, type1, weight, priority, completed, due, recurring, notificationId
     con.execute("INSERT INTO assignments VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", query)
     con.commit()
 
+
 def create_subassignment():
-    int subassignmentId = 0
-    int assignmentId = 0
-    str name = ""
-    str desc =""
-    bool completed = False
+    subassignmentId = 0
+    assignmentId = 0
+    name = ""
+    desc = ""
+    completed = False
     due = datetime.today()
-    bool recurring = False
-    int notificationId = 0
-    #Insert links to HTML input here
+    recurring = False
+    notificationId = 0
+    # Insert links to HTML input here
     con = sqlite3.connect('storage.db')
     query = subassignmentId, assignmentId, name, desc, completed, due, recurring, notificationId
     con.execute("INSERT INTO subassignment VALUES(?, ?, ?, ?, ?, ?, ?, ?)", query)
     con.commit()
 
+
 def create_notification():
-    int notificationId = 0
-    str message = ""
-    int deliveryMethod = 0
+    notificationId = 0
+    message = ""
+    deliveryMethod = 0
     sendAt = datetime.today()
-    int assignmentId = 0
-    int subassignmentId = 0
-    #Insert links to HTML input here
+    assignmentId = 0
+    subassignmentId = 0
+    # Insert links to HTML input here
     con = sqlite3.connect('storage.db')
     query = notificationId, message, deliveryMethod, sendAt, assignmentId, subassignmentId
     con.execute("INSERT INTO courses VALUES(?, ?, ?, ?, ?, ?)", query)
