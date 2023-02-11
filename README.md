@@ -9,3 +9,7 @@ pip install -r requirements.txt
 
 # To add installed packages to requirements.txt
 pip freeze > requirements.txt
+
+
+# To start the server, make sure you have the venv activated and run:
+uvicorn main:app
