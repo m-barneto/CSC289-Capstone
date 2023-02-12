@@ -20,7 +20,7 @@ class UserModel:
       conn = sqlite3.connect('storage.db')
       cur = conn.cursor()
       cur.execute('SELECT * FROM users WHERE username=(?)', (username,))
-      user = UserModel(*cur.fetchall()[0])
+      user = UserModel(*cur.fetchone())
     except Error as e:
       print(e)
     finally:
