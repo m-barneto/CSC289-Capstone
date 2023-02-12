@@ -104,6 +104,37 @@ class AssignmentDatabase:
         return conn
 
     """ Row Modification Section """
+    """ ====== Retrieving ====== """
+
+    # SELECTs all rows for the ASSIGNMENTS table
+    def get_all_rows_assignments(self):
+        rows = list()
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT * FROM assignments
+            ''')
+            records = cursor.fetchall()
+            for row in records:
+                rows.append(row)
+            conn.close()
+        return rows
+
+    # SELECTs the row for the ASSIGNMENTS table with the same id
+    def get_row_assignments(self, assignment_id):
+        row = None
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            cursor = conn.cursor()
+            cursor.execute('''
+            SELECT * FROM assignments WHERE assignment_id = ?
+            ''')
+            row = cursor.fetchone()
+            conn.close()
+        return row
+
+    """ Row Modification Section """
     """ ======== Adding ======== """
 
     # SQL pass function to add new row to USERS table
