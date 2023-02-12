@@ -87,7 +87,7 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # Make sure to close connection after use. 
+    # Make sure to close connection after use.
     # This is the untouched example from https://www.sqlitetutorial.net/sqlite-python/update/
     def create_connection(self, db_file):
         """ create a database connection to the SQLite database
@@ -256,16 +256,60 @@ class AssignmentDatabase:
     """ Row Modification Section """
     """ ======= Removing ======= """
 
-    def remove_row_users(self):
-        pass
-    def remove_row_courses(self):
-        pass
-    def remove_row_assignments(self):
-        pass
-    def remove_row_subassignments(self):
-        pass
-    def remove_row_notifications(self):
-        pass
+    # SQL pass function to remove row from to USERS table
+    def remove_row_users(self, user_id):
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            conn.execute('''
+                DELETE FROM users WHERE user_id = ?
+            ''', user_id)
+
+            conn.commit()
+            conn.close()
+
+    # SQL pass function to remove row from COURSES table
+    def remove_row_courses(self, course_id):
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            conn.execute('''
+                DELETE FROM courses WHERE course_id = ?
+            ''', course_id)
+
+            conn.commit()
+            conn.close()
+
+    # SQL pass function to remove row from ASSIGNMENTS table
+    def remove_row_assignments(self, assignment_id):
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            conn.execute('''
+                DELETE FROM assignments WHERE assignment_id = ?
+            ''', assignment_id)
+
+            conn.commit()
+            conn.close()
+
+    # SQL pass function to remove row from SUBASSIGNMENTS table
+    def remove_row_subassignments(self, subassignment_id):
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            conn.execute('''
+                DELETE FROM subassignments WHERE subassignment_id = ?
+            ''', subassignment_id)
+
+            conn.commit()
+            conn.close()
+
+    # SQL pass function to remove row from NOTIFICATIONS table
+    def remove_row_notifications(self, notification_id):
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            conn.execute('''
+                DELETE FROM notifications WHERE notification_id = ?
+            ''', notification_id)
+
+            conn.commit()
+            conn.close()
 
     """ Row Modification Section """
     """ ======= Updating ======= """
@@ -274,6 +318,8 @@ class AssignmentDatabase:
         pass
     def update_row_courses(self):
         pass
+
+    # SQL pass function to update row in ASSIGNMENTS table
     def update_row_assignments(self, assignment):
         conn = self.create_connection('storage.db')
         if conn is not None:
