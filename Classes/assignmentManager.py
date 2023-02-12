@@ -9,9 +9,22 @@ import csv
 *        a member variable. """
 class AssignmentManager:
 
-    # Parameter: in_assignments = list of assignment type.
-    def __init__(self, in_assignments):
-        self._assignments = in_assignments
+    # Parameter: in_database = assignmentDatabase type
+    def __init__(self, in_database):
+        self._assignments = list()
+        self._database = in_database
+        rows = in_database.get_all_rows_assignments()
+        for row in rows:
+            self._assignments.append(Assignment(row[0],   # id
+                                               row[1],   # course id
+                                               row[2],   # name
+                                               row[3],   # type
+                                               row[4],   # weight
+                                               row[5],   # priority
+                                               row[6],   # completed
+                                               row[7],   # due
+                                               row[8],   # recurring
+                                               row[9]))  # notification id
 
     # Utility for creating assignments
     def create_assignment(self, assignment_id, course_id=None, name=None, desc=None, type=None, weight=None, priority=None, completed=None, due=None, recurring=None, notification_id=None):
@@ -27,22 +40,21 @@ class AssignmentManager:
                           recurring,
                           notification_id)
 
-    """ Function for user to add additional assignments.
-    * @todo: Add connnection to database; something like...
-        INSERT INTO assignments(assignment_id, course_id, name, desc, type, weight, priority, completed, due, recurring, notification_id) 
-        VALUES(in_asignment.get_id(),in_asignment.get_course_id(),in_asignment.get_name(), in_assignment.get_desc(), in_asignment.get_type(),in_asignment.get_weight(),in_asignment.get_priority(),in_asignment.get_completed(),in_asignment.get_due(),in_asignment.get_recurring(),in_asignment.get_notification_id());
-         """
+    # Function for user to add additional assignments.
     def add_assignment(self, in_assignment):
         self._assignments.append(in_assignment)
+        self._database.add_row_assignments(in_assignment)
 
     # Function for user to remove assignments.
-    def remove_assignment(self, in_assignment, conn):
+    def remove_assignment(self, in_assignment):
         in_assignment.on_removed()
         self._assignments.remove(in_assignment)
+        self._database.remove_row_assignments(in_assignment.get_id())
 
     # Overloaded version to allow passing assignment_id.
     def remove_assignment_from_id(self, id):
         del self._assignments[id]
+        self._database.remove_row_assignments(id)
 
     # Returns all assignments that are internally marked as completed.
     def view_completed_assignments(self):
@@ -52,17 +64,10 @@ class AssignmentManager:
                 completed_assignments.append(a)
         return completed_assignments
 
-    """ Sends a message to assignment to change to repeating (recurring)
-    * Parameters:
-    *   in_assignment = assignment to change
-    *   repeats       = boolean value to change assignment.recurring to 
-    *
-    * #todo: Add connection to database; something like...
-     ALTER_TABLE 
-        WHERE
-            assignment_id = in_assignment.id;"""
+    # Sets a given assignment to repeat
     def set_repeating_assignment(self, in_assignment, repeats):
         in_assignment.set_recurring(repeats)
+        self._database.update_row_assignments_recurring(in_assignment)
 
     # Exports assignments to csv file
     def export_assignments(self, filename):
@@ -83,4 +88,6 @@ class AssignmentManager:
             #                   'due': assignment.get_due(),
             #                   'recurring': assignment.get_recurring(),
             #                   'notification_id': assignment.get_notification_id})
+            #
+            # Hey you can actually just use the self._assignments variable for this since it should be the exact same as the database.
 
