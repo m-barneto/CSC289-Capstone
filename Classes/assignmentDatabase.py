@@ -10,10 +10,8 @@ class AssignmentDatabase:
     # initialize function
     # formally: init_db()
     def __init__(self):
-        conn = None
-        try:
-            # Get our db connection
-            conn = sqlite3.connect('storage.db')
+        conn = self.create_connection('storage.db')
+        if conn is not None:
             # Create our tables if they don't already exist
             # TODO: figure out length limits and fix data type/***attributes***
             conn.execute("""CREATE TABLE IF NOT EXISTS users (
@@ -70,20 +68,15 @@ class AssignmentDatabase:
                 subassignment_id INT);
             """)
 
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
     # Provide default database data
     # For testing purposes only
     #
     # @todo Validate semicolon neccessity after VALUES() list
     def populate(self):
-        conn = None
-        try:
-            conn = sqlite3.connect('storage.db')
+        conn = self.create_connection('storage.db')
+        if conn is not None:
             # Should there be a semicolon after the VALUES() list?
             conn.execute('''
                 INSERT INTO 
@@ -92,14 +85,26 @@ class AssignmentDatabase:
             ''', (0, 'mbarneto', '1234', 'email@gmail.com', '9198675309', 'programming', 'SPR 2023'))
 
             conn.commit()
+            conn.close()
+
+    # Make sure to close connection after use. 
+    # This is the untouched example from https://www.sqlitetutorial.net/sqlite-python/update/
+    def create_connection(self, db_file):
+        """ create a database connection to the SQLite database
+            specified by the db_file
+        :param db_file: database file
+        :return: Connection object or None
+        """
+        conn = None
+        try:
+            conn = sqlite3.connect(db_file)
         except Error as e:
             print(e)
-        finally:
-            if conn:
-                conn.close()
+
+        return conn
 
     """ Row Modification Section """
-    """         Adding           """
+    """ ======== Adding ======== """
 
     # SQL pass function to add new row to USERS table
     def add_row_users(self, user_id, username, password, email, phone_number, degree, semester):
@@ -112,9 +117,8 @@ class AssignmentDatabase:
                 degree CHAR[32],
                 semester CHAR[32]);
             """
-        conn = None
-        try:
-            conn = sqlite3.connect('storage.db')
+        conn = self.create_connection('storage.db')
+        if conn is not None:
             # Should there be a semicolon after the VALUES() list?
             conn.execute('''
                 INSERT INTO 
@@ -123,11 +127,7 @@ class AssignmentDatabase:
             ''', (user_id, username, password, email, phone_number, degree, semester))
 
             conn.commit()
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
     # SQL pass function to add new row to COURSES table
     def add_row_courses(self, course_id, name, section, professor_name, online, dropped, color):
@@ -140,9 +140,8 @@ class AssignmentDatabase:
                 dropped BOOL,
                 color CHAR[6]);
             """
-        conn = None
-        try:
-            conn = sqlite3.connect('storage.db')
+        conn = self.create_connection('storage.db')
+        if conn is not None:
             # Should there be a semicolon after the VALUES() list?
             conn.execute('''
                 INSERT INTO 
@@ -151,11 +150,7 @@ class AssignmentDatabase:
             ''', (course_id, name, section, professor_name, online, dropped, color))
 
             conn.commit()
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
     # SQL pass function to add new row to ASSIGNMENTS table
     # def add_row_assignments(self):
@@ -176,9 +171,8 @@ class AssignmentDatabase:
                 recurring BOOL,
                 notification_id INT);
             """
-        conn = None
-        try:
-            conn = sqlite3.connect('storage.db')
+        conn = self.create_connection('storage.db')
+        if conn is not None:
             conn.execute('''
                 INSERT INTO 
                 assignments(assignment_id, course_id, name, type, weight, priority, completed, due, recurring, notification_id) 
@@ -196,11 +190,7 @@ class AssignmentDatabase:
                   ))
 
             conn.commit()
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
     # SQL pass function to add new row to SUBASSIGNMENTS table
     # def add_row_subassignments(self):
@@ -220,9 +210,8 @@ class AssignmentDatabase:
                 recurring BOOL,
                 notification_id INT);
             """
-        conn = None
-        try:
-            conn = sqlite3.connect('storage.db')
+        conn = self.create_connection('storage.db')
+        if conn is not None:
             conn.execute('''
                 INSERT INTO 
                 subassignments(subassignment_id, assignment_id, course_id, name, type, weight, priority, completed, due, recurring, notification_id) 
@@ -241,11 +230,7 @@ class AssignmentDatabase:
                   ))
 
             conn.commit()
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
     # SQL pass function to add new row to NOTIFICATIONS table
     def add_row_notifications(self, notification_id, message, delivery_method, send_at, assignment_id, subassignment_id):
@@ -257,9 +242,8 @@ class AssignmentDatabase:
                 assignment_id INT,
                 subassignment_id INT);
             """
-        conn = None
-        try:
-            conn = sqlite3.connect('storage.db')
+        conn = self.create_connection('storage.db')
+        if conn is not None:
             conn.execute('''
                 INSERT INTO 
                 assignments(notification_id, message, delivery_method, send_at, assignment_id, subassignment_id) 
@@ -267,14 +251,10 @@ class AssignmentDatabase:
             ''', (notification_id, message, delivery_method, send_at, assignment_id, subassignment_id))
 
             conn.commit()
-        except Error as e:
-            print(e)
-        finally:
-            if conn:
-                conn.close()
+            conn.close()
 
     """ Row Modification Section """
-    """        Removing          """
+    """ ======= Removing ======= """
 
     def remove_row_users(self):
         pass
@@ -287,3 +267,59 @@ class AssignmentDatabase:
     def remove_row_notifications(self):
         pass
 
+    """ Row Modification Section """
+    """ ======= Updating ======= """
+
+    def update_row_users(self):
+        pass
+    def update_row_courses(self):
+        pass
+    def update_row_assignments(self, assignment):
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            conn.execute('''
+                UPDATE assignments
+                SET course_id = ?, 
+                    name = ?, 
+                    type = ?, 
+                    weight = ?, 
+                    priority = ?, 
+                    completed = ?, 
+                    due = ?, 
+                    recurring = ?, 
+                    notification_id = ?
+                WHERE assignment_id = ?
+            ''', (assignment.get_course_id(),
+                  assignment.get_name(),
+                  assignment.get_type(),
+                  assignment.get_weight(),
+                  assignment.get_priority(),
+                  assignment.get_completed(),
+                  assignment.get_due(),
+                  assignment.get_recurring(),
+                  assignment.get_notification_id(),
+                  assignment.get_id()
+                  ))
+
+            conn.commit()
+            conn.close()
+
+    # Utility function for only updating the 'recurring' column of a row
+    def update_row_assignments_recurring(self, assignment):
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            conn.execute('''
+                UPDATE assignments
+                SET recurring = ?
+                WHERE assignment_id = ?
+            ''', (assignment.get_recurring(),
+                  assignment.get_id()
+                  ))
+
+            conn.commit()
+            conn.close()
+
+    def update_row_subassignments(self):
+        pass
+    def update_row_notifications(self):
+        pass
