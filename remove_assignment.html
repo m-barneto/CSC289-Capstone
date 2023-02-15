@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>UI for Group Project</title>
+        <meta charset="UTF-8">
+        <style>
+            
+            body {
+                background-color: #222;
+            }
+
+            header {
+                background:rgb(255, 123, 0);
+                border: 5px solid black;
+            }
+
+            header::after {
+                content: '';
+                display: table;
+                clear: both;
+            }
+
+            .container {
+                width: 85%;
+                margin: 0 auto;
+            }
+
+            header img {
+                float: left;
+                margin-top: 5px;
+            }
+
+            header nav {
+                background-color: rgb(255, 123, 0);
+                float: right;
+            }
+
+            header nav li {
+                display: inline-block;
+                padding: 0px 0px;
+            }
+
+            header nav button {
+                background-color:rgb(255, 123, 0);
+                height: 50px;
+                width: 150px;
+                font-size: 20px;
+                margin-left: 10px;
+                cursor: pointer;
+                border: 3px solid black;
+            }
+
+            nav button:hover {
+                background-color:rgb(255, 157, 65)
+            }
+
+            .main_menu {
+                background-color:rgb(255, 123, 0);
+                border: 5px solid black;
+                width: 70%;
+                margin: 0 auto;
+                margin-top: 50px;
+            }
+
+            .main_menu h1 {
+                text-align: center;
+            }
+
+            .main_menu ul {
+                text-align: center;
+            }
+
+            .main_menu li {
+                display: inline-block;
+                padding-bottom: 5px;
+            }
+
+            .main_menu button {
+                background-color:rgb(255, 123, 0);
+                height: 50px;
+                width: 400px;
+                font-size: 20px;
+                cursor: pointer;
+                border: 3px solid black;
+            }
+
+            .main_menu nav button:hover {
+                background-color:rgb(255, 157, 65)
+            }
+
+            .main_menu h2 {
+                text-align: center;
+            }
+
+            .main_menu p {
+                text-align: center;
+                font-size: 20px;
+                width: 80%;
+                margin-left: 10%;
+            }
+
+            table {
+                border: 2px solid black;
+                width: 80%;
+                margin: 0 auto;
+            }
+
+            th {
+                text-align: center;
+                border-left: 2px solid black;
+                border-bottom: 2px solid black;
+                width: 10%;
+                font-size: 20px;
+            }
+
+            #remove {
+                width: 3%;
+                border-left: none;
+            }
+
+            #assignment {
+                width: 15%;
+            }
+
+            #description {
+                width: 18%;
+            }
+
+            td {
+                border-left: 2px solid black;
+                border-bottom: 2px solid black;
+                font-size: 16px;
+            }
+
+            #submit_button {
+                height: 50px;
+                width: 30%;
+                margin: auto;
+                text-align: center;
+            }
+
+
+
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <img src="logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
+                <nav>
+                    <ul id="nav">
+                        <li><button onclick="window.location.href='index.html';">Main Menu</button></li>
+                        <li><button onclick="window.location.href='calendar_view.html';">View Calendar</button></li>
+                        <li><button href="">Save</button></li>
+                        <li><button href="">Import</button></li>
+                        <li><button href="">Export</button></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div class="main_menu">
+            <h1>Main Menu</h1>
+            <div>
+                <nav>
+                    <ul>
+                        <li><button onclick="window.location.href='add_assignment.html';">Add Assignment</button></li>
+                        <li><button onclick="window.location.href='edit_assignment.html';">Edit Assignment</button></li>
+                        <li><button onclick="window.location.href='remove_assignment.html';">Remove Assignment</button></li>
+                    </ul>
+                </nav>
+            </div>
+            <div>
+                <table>
+                    <tr>
+                        <th id="remove"></th>
+                        <th id="assignment">Assignment</th>
+                        <th>Class</th>
+                        <th>Due Date</th>
+                        <th>Grade Weight</th>
+                        <th id="description">Description</th>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Homework Assignment #6</td>
+                        <td>Calculus II</td>
+                        <td>02/15/2023</td>
+                        <td>3%</td>
+                        <td>Using the Quadratic Equation to calculate the trajectory of a thrown item.</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                        <td>Data</td>
+                    </tr>
+                </table>
+            </div>
+            <br>
+            <button id="submit_button">Submit Changes</button>
+        </div>
+    </body>
+</html>

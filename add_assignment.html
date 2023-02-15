@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>UI for Group Project</title>
+        <meta charset="UTF-8">
+        <style>
+            
+            body {
+                background-color: #222;
+            }
+
+            header {
+                background:rgb(255, 123, 0);
+                border: 5px solid black;
+            }
+
+            header::after {
+                content: '';
+                display: table;
+                clear: both;
+            }
+
+            .container {
+                width: 85%;
+                margin: 0 auto;
+            }
+
+            header img {
+                float: left;
+                margin-top: 5px;
+            }
+
+            header nav {
+                background-color: rgb(255, 123, 0);
+                float: right;
+            }
+
+            header nav li {
+                display: inline-block;
+                padding: 0px 0px;
+            }
+
+            header nav button {
+                background-color:rgb(255, 123, 0);
+                height: 50px;
+                width: 150px;
+                font-size: 20px;
+                margin-left: 10px;
+                cursor: pointer;
+                border: 3px solid black;
+            }
+
+            .main_menu {
+                background-color:rgb(255, 123, 0);
+                border: 5px solid black;
+                width: 70%;
+                margin: 0 auto;
+                margin-top: 50px;
+            }
+
+            .main_menu h1 {
+                text-align: center;
+            }
+
+            .main_menu ul {
+                text-align: center;
+            }
+
+            .main_menu li {
+                display: inline-block;
+                padding-bottom: 5px;
+            }
+
+            .main_menu button {
+                background-color:rgb(255, 123, 0);
+                height: 50px;
+                width: 400px;
+                font-size: 20px;
+                cursor: pointer;
+                border: 3px solid black;
+            }
+
+            button:hover {
+                background-color:rgb(255, 157, 65)
+            }
+
+            #assignment_info {
+                margin: auto;
+                width: 40%;
+                padding: 20px;
+            }
+
+            #assignment_info label {
+                font-size: 22px;
+                font-weight: bold;
+            }
+
+            #assignment_info input {
+                height: 20px;
+                width: 100%;
+            }
+
+            #assignment_info textarea {
+                height: 100px;
+                width: 100%;
+            }
+
+            #assignment_info button {
+                height: 50px;
+                width: 100%;
+            }
+
+
+
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <img src="logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
+                <nav>
+                    <ul id="nav">
+                        <li><button onclick="window.location.href='index.html';">Main Menu</button></li>
+                        <li><button onclick="window.location.href='calendar_view.html';">View Calendar</button></li>
+                        <li><button href="">Save</button></li>
+                        <li><button href="">Import</button></li>
+                        <li><button href="">Export</button></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div class="main_menu">
+            <h1>Add Assignment</h1>
+            <div>
+                <nav>
+                    <ul>
+                        <li><button onclick="window.location.href='add_assignment.html';">Add Assignment</button></li>
+                        <li><button onclick="window.location.href='edit_assignment.html';">Edit Assignment</button></li>
+                        <li><button onclick="window.location.href='remove_assignment.html';">Remove Assignment</button></li>
+                    </ul>
+                </nav>
+            </div>
+            <div id="assignment_info">
+                <label>Assignment Name:</label> <br>
+                <input type="text" id="assignment_name" placeholder="Assignment Name">
+                <br>
+                <label>Class:</label> <br>
+                <input type="text" id="class" placeholder="Class Name">
+                <br>
+                <label>Due Date:</label> <br>
+                <input type="text" id="due_date" placeholder="MM/DD/YYYY">
+                <br>
+                <label>Grade Weight:</label> <br>
+                <input type="text" id="grade_weight" placeholder="Grade Weight">
+                <br>
+                <label>Description:</label> <br>
+                <textarea rows="10" cols="40" type="text" id="description" placeholder="Assignment Description"></textarea>
+                <br>
+                <button id="submit_button">Add Assignment</button>
+            </div>
+        </div>
+    </body>
+</html>

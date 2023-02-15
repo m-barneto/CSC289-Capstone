@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>UI for Group Project</title>
+        <meta charset="UTF-8">
+        <style>
+            
+            body {
+                background-color: #222;
+            }
+
+            header {
+                background:rgb(255, 123, 0);
+                border: 5px solid black;
+            }
+
+            header::after {
+                content: '';
+                display: table;
+                clear: both;
+            }
+
+            .container {
+                width: 85%;
+                margin: 0 auto;
+            }
+
+            header img {
+                float: left;
+                margin-top: 5px;
+            }
+
+            header nav {
+                background-color: rgb(255, 123, 0);
+                float: right;
+            }
+
+            header nav li {
+                display: inline-block;
+                padding: 0px 0px;
+            }
+
+            header nav button {
+                background-color:rgb(255, 123, 0);
+                height: 50px;
+                width: 150px;
+                font-size: 20px;
+                margin-left: 10px;
+                cursor: pointer;
+                border: 3px solid black;
+            }
+
+            nav button:hover {
+                background-color:rgb(255, 157, 65)
+            }
+
+            .main_menu {
+                background-color:rgb(255, 123, 0);
+                border: 5px solid black;
+                width: 70%;
+                margin: 0 auto;
+                margin-top: 50px;
+            }
+
+            .main_menu h1 {
+                text-align: center;
+            }
+
+            .main_menu ul {
+                text-align: center;
+            }
+
+            .main_menu li {
+                display: inline-block;
+                padding-bottom: 5px;
+            }
+
+            .main_menu button {
+                background-color:rgb(255, 123, 0);
+                height: 50px;
+                width: 400px;
+                font-size: 20px;
+                cursor: pointer;
+                border: 3px solid black;
+            }
+
+            .main_menu nav button:hover {
+                background-color:rgb(255, 157, 65)
+            }
+
+            .main_menu h2 {
+                text-align: center;
+            }
+
+            .main_menu p {
+                text-align: center;
+                font-size: 20px;
+                width: 80%;
+                margin-left: 10%;
+            }
+
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <img src="logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
+                <nav>
+                    <ul id="nav">
+                        <li><button onclick="window.location.href='index.html';">Main Menu</button></li>
+                        <li><button onclick="window.location.href='calendar_view.html';">View Calendar</button></li>
+                        <li><button href="">Save</button></li>
+                        <li><button href="">Import</button></li>
+                        <li><button href="">Export</button></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div class="main_menu">
+            <h1>Main Menu</h1>
+            <div>
+                <nav>
+                    <ul>
+                        <li><button onclick="window.location.href='add_assignment.html';">Add Assignment</button></li>
+                        <li><button onclick="window.location.href='edit_assignment.html';">Edit Assignment</button></li>
+                        <li><button onclick="window.location.href='remove_assignment.html';">Remove Assignment</button></li>
+                    </ul>
+                </nav>
+            </div>
+            <h2>Instructions</h2>
+            <p>Welcome to the Assignment Tracker! This is the main page, where you can find any and all functions of this program.
+                The options at the top allow you to view your calendar, as well as save any changes you have made. You can even export
+                your calendar and use the file on a different device by importing it. The Main Menu button will bring you back to this page.
+                These options will be available on every page in the same location. To the left you will see your options for adjusting
+                your calendar. The options are pretty self-explanitory. Add Assignment allows you to add a new item to your calendar,
+                Edit Assignment is used for editing items already on your calendar, and Remove Assignment is for deleting items from 
+                the calendar. If you want to keep track of finished assignments, make sure to mark them as completed, instead of deleting them.</p>
+        </div>
+    </body>
+</html>
