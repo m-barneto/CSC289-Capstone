@@ -1,4 +1,4 @@
-from assignment import Assignment
+from classes import Assignment
 import csv
 
 
