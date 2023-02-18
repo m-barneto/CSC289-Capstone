@@ -36,3 +36,26 @@ class Assignment:
     due: datetime
     recurring: bool
     sub_assignments: list[SubAssignment]
+
+
+@dataclass
+class Course:
+    id: int
+    name: str
+    section: str
+    professor: str
+    online: bool
+    dropped: bool
+    color: str
+    assignments: list[Assignment]
+
+
+@dataclass
+class User:
+    id: int
+    username: str
+    password: str
+    email: str
+    phone_number: int
+    degree: str
+    semester: str
