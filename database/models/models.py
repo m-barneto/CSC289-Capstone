@@ -20,7 +20,7 @@ class SubAssignment:
     description: str
     completed: bool
     due: datetime
-    notifications: Notification
+    notification: Notification
 
 
 @dataclass
