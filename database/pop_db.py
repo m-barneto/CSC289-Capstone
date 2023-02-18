@@ -24,10 +24,11 @@ def populate():
             "Wesley",
         ]
         last_name_list = ["Smith", "John", "Jones", "Peters", "Matts", "Brown"]
-        usernames = [
-            random.choice(first_name_list) + " " + random.choice(last_name_list)
-            for _ in range(USER_NUM_ENTRIES)
-        ]
+        usernames = set([])
+        while len(usernames) < USER_NUM_ENTRIES:
+            usernames.add(
+                random.choice(first_name_list) + " " + random.choice(last_name_list)
+            )
         # select a random number from 1-9 4 times to create pass then add that to a list of passwords, do USER_NUM_ENTRIES times
         passwords = [
             "".join(random.choice([str(i) for i in range(1, 9)]) for _ in range(4))
@@ -104,8 +105,8 @@ def populate():
         # create random 2023 due dates for each assignment
         assignment_due_dates_list = [
             "2023-"
-            + [f"{random.choice(str(range(1, 13))):2f}"]
-            + [f"{random.choice(str(range(1, 29))):2f}"]
+            + f"{random.choice(range(1, 13)):02}-"
+            + f"{random.choice(range(1, 29)):02}"
             for _ in range(ASSIGNMENT_NUM_ENTRIES)
         ]
         assignment_recurring = [
@@ -126,7 +127,9 @@ def populate():
         )
 
         # insert into users
+        # delete data if already present for fresh database creation
         with sqlite3.connect("storage.db") as conn:
+            conn.execute("DELETE FROM users")
             sqlite_user_insert = """
                 INSERT INTO 
                 users(user_id, username, password, email, phone_number, degree, semester) 
@@ -150,12 +153,13 @@ def populate():
 
         # insert into assignments
         with sqlite3.connect("storage.db") as conn:
+            conn.execute("DELETE FROM assignments")
             sqlite_assignment_insert = """
                 INSERT INTO 
-                assignments(user_id, username, password, email, phone_number, degree, semester) 
+                assignments(assignment_id, course_id, name, type, weight, priority, completed, due, recurring, notification_id) 
                 VALUES(?,?,?,?,?,?,?,?,?,?)
             """
-            for item in dummy_user_data:
+            for item in dummy_assignment_data:
                 conn.execute(sqlite_assignment_insert, item)
             conn.commit()
     except Error as error:
