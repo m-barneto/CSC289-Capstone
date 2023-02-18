@@ -15,7 +15,7 @@ class Notification:
 @dataclass
 class SubAssignment:
     id: int
-    assignment_id: int  # This may be unnecessary but following db schema
+    assignment_id: int
     name: str
     description: str
     completed: bool
