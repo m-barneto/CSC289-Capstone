@@ -116,7 +116,6 @@ print(user)
 
 
 def add_assignment():
-
     con = sqlite3.connect('storage.db')
     query = courseId, name, type1, weight, priority, completed, due, recurring
     con.execute("INSERT INTO assignments(course_id, name, type, weight, priority, completed, due, recurring) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", query)

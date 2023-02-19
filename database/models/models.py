@@ -28,7 +28,6 @@ class Assignment:
     id: int
     course_id: int
     name: str
-    description: str
     type: str
     weight: str  # Maybe change to float, following db scheme for now
     priority: int
