@@ -55,7 +55,6 @@ def init_db():
             subassignment_id INT NOT NULL PRIMARY KEY,
             assignment_id INT,
             name CHAR[32],
-            desc TEXT,
             completed BOOL,
             due DATETIME,
             recurring BOOL,
