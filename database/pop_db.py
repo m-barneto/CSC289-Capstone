@@ -160,7 +160,8 @@ def populate():
                 VALUES(?,?,?,?,?,?,?,?,?,?)
             """
             for item in dummy_assignment_data:
-                conn.execute(sqlite_assignment_insert, item)
+                #conn.execute(sqlite_assignment_insert, item)
+                pass
             conn.commit()
     except Error as error:
         print(error)

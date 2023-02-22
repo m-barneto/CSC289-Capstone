@@ -34,7 +34,10 @@ class Assignment:
     completed: bool
     due: datetime
     recurring: bool
-    sub_assignments: list[SubAssignment]
+    #sub_assignments: list[SubAssignment]
+    notification_id: int
+    def params(self):
+        return self.course_id, self.name, self.type, self.weight, self.priority, self.completed, self.due, self.recurring, self.notification_id
 
 
 @dataclass
