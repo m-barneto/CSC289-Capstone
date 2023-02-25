@@ -141,8 +141,6 @@ async def add_assignment(req: Request):
     #con.commit()
 
 
-print(AssignmentCRUD.get_all_assignments())
-
 app = Starlette(debug=True, routes=[
     #Route('/', homepage),
     Route('/req', endpoint=post_req, methods=['POST']),
