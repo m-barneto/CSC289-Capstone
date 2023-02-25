@@ -114,7 +114,7 @@ def populate():
         ]
         assignment_notification_id = [i for i in range(1, ASSIGNMENT_NUM_ENTRIES)]
         dummy_assignment_data = zip(
-            assignment_ids,
+            # assignment_ids,
             course_ids,
             assignment_names,
             assingment_types,
@@ -157,10 +157,10 @@ def populate():
             sqlite_assignment_insert = """
                 INSERT INTO 
                 assignments(assignment_id, course_id, name, type, weight, priority, completed, due, recurring, notification_id) 
-                VALUES(?,?,?,?,?,?,?,?,?,?)
+                VALUES(NULL,?,?,?,?,?,?,?,?,?)
             """
             for item in dummy_assignment_data:
-                #conn.execute(sqlite_assignment_insert, item)
+                conn.execute(sqlite_assignment_insert, item)
                 pass
             conn.commit()
     except Error as error:

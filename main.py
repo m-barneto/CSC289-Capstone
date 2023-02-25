@@ -133,13 +133,15 @@ async def add_assignment(req: Request):
     assignment = Assignment(0, 0, data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%m/%d/%y'), False, None)
     AssignmentCRUD.create_assignment(assignment.params())
     
-    return JSONResponse({'cccc': 'ddddddd'})
+    return JSONResponse(data._dict)
     #return RedirectResponse('/add_assignment/add_assignment.html')
     #con = sqlite3.connect('storage.db')
     #query = (courseId, name, type1, weight, priority, completed, due, recurring)
     #con.execute("INSERT INTO assignments(course_id, name, type, weight, priority, completed, due, recurring) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", query)
     #con.commit()
 
+
+print(AssignmentCRUD.get_all_assignments())
 
 app = Starlette(debug=True, routes=[
     #Route('/', homepage),
