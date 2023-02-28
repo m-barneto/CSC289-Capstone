@@ -126,8 +126,57 @@ def populate():
             assignment_notification_id,
         )
 
-        # insert into users
+        # COURSE CREATION
+        COURSE_NUM_ENTRIES = 10
+        # id's generated automatically
+        course_names_list = [
+            "CTS-115: INFORMATION SYSTEMS BUSINESS CONCEPTS",
+            "CTS-120: HARDWARE/SOFTWARE SUPPORT",
+            "CTS-130: SPREADSHEET",
+            "CTS-155: TECH SUPPORT FUNCTIONS",
+            "CTS-220: ADVANCED HARDWARE/SOFTWARE SUPPORT",
+            "DBA-120: DATABASE PROGRAMMING I",
+            "DBA-130: INTRODUCTION TO NOSQL DATABASES",
+            "DBA-240: DATABASE ANALYSIS AND DESIGN",
+            "CSC-114: ARTIFICIAL INTELLIGENCE I",
+            "CSC-120: COMPUTING FUNDAMENTALS I",
+            "CSC-121: PYTHON PROGRAMMING",
+            "CSC-122: PYTHON APPLICATION DEVELOPMENT",
+        ]
+        course_section_list = [i for i in range(1, 3)]
+        professor_name_list = [
+            "Chen, Chen-Pi Peter",
+            "Cui, Hong",
+            "Cox, George",
+            "Copperthwaite, Joan A.",
+            "Darvish, Ali",
+            "Ellis, Charlotte D.",
+            "Matlock, James L.",
+            "Paul, Pamela L.",
+            "Rizzo, Susan",
+            "Samuels, Roslyn R.",
+            "Steffes, Ryan B.",
+            "Swearingen, Brad J.",
+        ]
+        color_list = ["Red", "Blue", "Orange", "Pink", "Green", "Yellow", "Violet"]
+        course_names = [
+            random.choice(course_names_list) for _ in range(COURSE_NUM_ENTRIES)
+        ]
+        course_sections = [
+            random.choice(course_section_list) for _ in range(COURSE_NUM_ENTRIES)
+        ]
+        professor_names = [
+            random.choice(professor_name_list) for _ in range(COURSE_NUM_ENTRIES)
+        ]
+        online = [bool(random.getrandbits(1)) for _ in range(COURSE_NUM_ENTRIES)]
+        dropped = [bool(random.getrandbits(1)) for _ in range(COURSE_NUM_ENTRIES)]
+        colors = [random.choice(color_list) for _ in range(COURSE_NUM_ENTRIES)]
+        dummy_course_data = zip(
+            course_names, course_sections, professor_names, online, dropped, colors
+        )
+
         # delete data if already present for fresh database creation
+        # insert into users
         with sqlite3.connect("storage.db") as conn:
             conn.execute("DELETE FROM users")
             sqlite_user_insert = """
@@ -161,7 +210,17 @@ def populate():
             """
             for item in dummy_assignment_data:
                 conn.execute(sqlite_assignment_insert, item)
-                pass
+            conn.commit()
+
+        with sqlite3.connect("storage.db") as conn:
+            conn.execute("DELETE FROM courses")
+            sqlite_course_insert = """
+                INSERT INTO
+                courses(course_id, name, section, professor_name, online, dropped, color)
+                VALUES(NULL,?,?,?,?,?,?)
+            """
+            for item in dummy_course_data:
+                conn.execute(sqlite_course_insert, item)
             conn.commit()
     except Error as error:
         print(error)
