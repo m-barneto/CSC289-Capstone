@@ -12,10 +12,11 @@ class AssignmentManager:
     # Parameter: in_database = assignmentDatabase type
     def __init__(self, in_database):
         self._assignments = list()
+        self._notifications = list()
         self._database = in_database
         rows = in_database.get_all_rows_assignments()
         for row in rows:
-            self._assignments.append(Assignment(row[0],   # id
+            self._assignments.append(Assignment(row[0],  # id
                                                row[1],   # course id
                                                row[2],   # name
                                                row[3],   # type
@@ -25,10 +26,18 @@ class AssignmentManager:
                                                row[7],   # due
                                                row[8],   # recurring
                                                row[9]))  # notification id
+        rows = in_database.get_all_rows_notifications()
+        for row in rows:
+            self._notifications.append(Notification(row[0], # id
+                                                   row[1],  # message
+                                                   row[2],  # delivery_method
+                                                   row[3],  # send_at
+                                                   row[4],  # assignment_id
+                                                   row[5])) # sub_assignment_id
 
     # Utility for creating assignments
     def create_assignment(self, assignment_id, course_id=None, name=None, type=None, weight=None, priority=None, completed=None, due=None, recurring=None, notification_id=None):
-        return Assignment(assignment_id,
+        return Assignment(assignment_id,    # We can probably use len(_assignments) if we never remove assignments.
                           course_id,
                           name,
                           type,
@@ -39,12 +48,25 @@ class AssignmentManager:
                           recurring,
                           notification_id)
 
-
+    # Utility for creating notifications
+    def create_notification(self, notification_id, message=None, delivery_method=None, send_at=None, assignment_id=None, sub_assignment_id=None):
+        return Notification(notification_id,    # Same comment as create_assignment(); we can probably use len(self._notifications) if we never remove any notifications.
+                           message,
+                           delivery_method,
+                           send_at,
+                           assignment_id,
+                           sub_assignment_id)
+    
+    # Function for adding notifications when additional assignments get added
+    def add_notification(self, in_notification):
+        self._database.add_row_notifications(in_notification)
+    
     # Function for user to add additional assignments.
-
     def add_assignment(self, in_assignment):
         self._assignments.append(in_assignment)
         self._database.add_row_assignments(in_assignment)
+        if not in_assignment.get_completed:
+            self.add_notification(self.create_notification(len(self._notifications)))
 
     # Function for user to remove assignments.
     def remove_assignment(self, in_assignment):
