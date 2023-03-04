@@ -133,7 +133,35 @@ class AssignmentDatabase:
             row = cursor.fetchone()
             conn.close()
         return row
-
+    
+    # SELECTs all rows for the NOTIFICATIONS table
+    def get_all_rows_notifications(self):
+        rows = list()
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT * FROM notifications
+            ''')
+            records = cursor.fetchall()
+            for row in records:
+                rows.append(row)
+            conn.close()
+        return rows
+    
+    # SELECTs the row for the NOTIFICATIONS table with the same id
+    def get_row_notifications(self, notification_id):
+        row = None
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            cursor = conn.cursor()
+            cursor.execute('''
+            SELECT * FROM notifications WHERE notification_id = ?
+            ''')
+            row = cursor.fetchone()
+            conn.close()
+        return row
+    
     """ Row Modification Section """
     """ ======== Adding ======== """
 
