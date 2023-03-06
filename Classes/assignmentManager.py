@@ -1,5 +1,6 @@
 from assignment import Assignment
 from notification import Notification
+from datetime import datetime, timedelta
 import csv
 
 
@@ -61,12 +62,32 @@ class AssignmentManager:
         self._notifications = list()
         rows = self._database.get_all_rows_notifications()
         for row in rows:
-            self._notifications.append(Notification(row[0], # id
-                                                   row[1],  # message
-                                                   row[2],  # delivery_method
-                                                   row[3],  # send_at
-                                                   row[4],  # assignment_id
-                                                   row[5])) # sub_assignment_id
+            n = Notification(row[0], # id
+                           row[1],  # message
+                           row[2],  # delivery_method
+                           row[3],  # send_at
+                           row[4],  # assignment_id
+                           row[5])  # sub_assignment_id
+            n.send_notification.add_event(self._on_notification_sent)
+            self._notifications.append(n)
+
+    """
+    Function Section
+    ==== Getters ====
+    """
+
+    def get_assignments_with_notification_id(self, id):
+        """
+        Retrieves all assignments attached to a notification id.
+
+        Returns:
+            a (Assignment object): Assignment connected to notification_id
+        """
+
+        for a in self._assignments:
+            if id == a.get_notification_id():
+                return a
+        return None
 
     """
     Function Section
@@ -118,11 +139,29 @@ class AssignmentManager:
             Notification (object)
         """
 
-        return Notification(notification_id,    # Same comment as create_assignment(); we can probably use len(self._notifications) if we never remove any notifications.
+        n = Notification(notification_id,    # Same comment as create_assignment(); we can probably use len(self._notifications) if we never remove any notifications.
                            message,
                            delivery_method,
                            send_at,
                            sub_assignment_id)
+        n.send_notification.add_event(self._on_notification_sent)
+        return n
+
+    """
+    Function Section
+    == Delegate Events ==
+    """
+
+    def _on_notification_sent(self, sent_notification):
+        """
+        Function bound to notification delegate inside of each Notification.
+        Will be called from a separate thread when date matches current date.
+        """
+
+        if self.get_assignments_with_notification_id(sent_notification.get_id()).get_recurring():
+            sent_notification.reset(7) # Default is weekly, but should the occurrence be variable?
+        else:
+            sent_notification.stop_tick()
 
     """
     Function Section
@@ -141,6 +180,17 @@ class AssignmentManager:
         self._database.add_row_assignments(in_assignment)
         if not in_assignment.get_completed:
             self.add_notification(self.create_notification(len(self._notifications)))
+
+    """
+    Function Section
+    === Modification ===
+    """
+
+    def set_repeating_assignment(self, in_assignment, repeats):
+        """Sets a given assignment to repeat."""
+
+        in_assignment.set_recurring(repeats)
+        self._database.update_row_assignments_recurring(in_assignment)
 
     """
     Function Section
@@ -173,12 +223,6 @@ class AssignmentManager:
             if a.get_completed():
                 completed_assignments.append(a)
         return completed_assignments
-
-    def set_repeating_assignment(self, in_assignment, repeats):
-        """Sets a given assignment to repeat."""
-
-        in_assignment.set_recurring(repeats)
-        self._database.update_row_assignments_recurring(in_assignment)
 
     def export_assignments(self, filename):
         """Exports assignments to csv file."""
