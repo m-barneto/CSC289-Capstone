@@ -1,5 +1,5 @@
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from threading import Thread, Event
 
 
@@ -45,7 +45,7 @@ class NotificationDelegate:
 
     def broadcast(self):
         """Calls all bound events."""
-        
+
         ret_value = self._func()
         for event in self._events:
             event(ret_value)
@@ -82,9 +82,9 @@ class Notification:
 
         self._id = notification_id
         self._assignment_id = subassignment_id
-        self._previous_time = datetime.now().time()
         self._frequency = tick_frequency
         self._date = send_date
+        self._has_been_sent = False
         self._tick_thread = Thread(target=self._perform_tick())
         self._stop_tick_event = Event()
 
@@ -98,9 +98,6 @@ class Notification:
 
     def get_assignment_id(self):
         return self._assignment_id
-
-    def get_previous_tick_execution(self):
-        return self._previous_time
 
     def get_tick_frequency(self):
         return self._frequency
@@ -125,6 +122,12 @@ class Notification:
     def set_date(self, date):
         self._date = date
 
+    def reset(self, days):
+        date_strip = datetime.strptime(self._date, "%m/%d/%y")
+        new_date = date_strip + timedelta(days=10)
+        self._date = new_date
+        self._has_been_sent = False
+
     """
     Function Section
     ==== Ticking ====
@@ -143,17 +146,15 @@ class Notification:
         """Thread function to call at frequency amount."""
 
         while True:
-            delta_time = datetime.now().time() - self._previous_time
-            if delta_time > self._frequency:
-                self._tick()
-                self._previous_time = datetime.now().time()
+            time.sleep(self._frequency)
+            self._tick()
             if self._stop_tick_event.is_set():
                 break
 
     def _tick(self, delta_time):
         """Event called to check if notification should be sent out"""
 
-        if self._date >= datetime.now().date():
+        if self._date >= datetime.now().date() and not self._has_been_sent:
             self.send_notification()
 
     def stop_tick(self):
@@ -173,4 +174,5 @@ class Notification:
         This function and be called after this Event is called.
         """
 
+        self._has_been_sent = True
         return self
