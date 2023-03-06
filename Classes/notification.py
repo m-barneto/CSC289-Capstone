@@ -140,6 +140,7 @@ class Notification:
         To check if the send_date has been reached. There is
         An exit event in case of early shutdown as well.
         """
+        
         self._tick_thread.start()
 
     def _perform_tick(self):
