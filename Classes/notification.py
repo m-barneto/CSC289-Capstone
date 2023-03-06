@@ -28,6 +28,8 @@ class NotificationDelegate:
     bar = Bar()
     foo.add_event(bar.do_something)
     foo() # This will call foo() and then bar.do_something()
+
+    All passed in events should have a Notification (object) parameter.
     """
 
     def __init__(self, func):
@@ -39,14 +41,14 @@ class NotificationDelegate:
     def __call__(self):
         """() override to call __call__() on all bound events."""
 
-        self._func()
         self.broadcast()
 
     def broadcast(self):
         """Calls all bound events."""
-
+        
+        ret_value = self._func()
         for event in self._events:
-            event()
+            event(ret_value)
 
     def add_event(self, event):
         """Adds an event to be called when this object has been called."""
@@ -171,4 +173,4 @@ class Notification:
         This function and be called after this Event is called.
         """
 
-        pass
+        return self
