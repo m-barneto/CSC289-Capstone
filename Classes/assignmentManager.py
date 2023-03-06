@@ -1,20 +1,45 @@
 from assignment import Assignment
+from notification import Notification
 import csv
 
 
-""" Manager model for handling all assignments added by the user.
-* Ideally, the user would create an assignment, then add it to the list.
-* The list then would sync with the database.
-* @todo: Add database interaction either through function parameters or
-*        a member variable. """
 class AssignmentManager:
+    """
+    * Manager model for handling all assignments added by the user.
+    * Ideally, the user would create an assignment, then add it to the list.
+    * The list then would sync with the database.
+    """
 
-    # Parameter: in_database = assignmentDatabase type
+    """
+    Function Section
+    ======= Defaults =======
+    """
+
     def __init__(self, in_database):
-        self._assignments = list()
-        self._notifications = list()
+        """
+        The constructor for AssignmentManager.
+
+        Parameters:
+            in_database (assignmentDatabase): The assignment database to manage.
+        """
+
         self._database = in_database
-        rows = in_database.get_all_rows_assignments()
+        self._init_assignments_()
+        self._init_notifications_()
+
+    """
+    Function Section
+    ===== Initialization =====
+    """
+
+    def _init_assignments_(self):
+        """
+        Utility to break up functionality of __init__() into more clear and clean tasks.
+        Sets assignments to an empty list, then retrieves all assignments from database.
+        """
+
+        self._assignments = list()
+        rows = self._database.get_all_rows_assignments()
         for row in rows:
             self._assignments.append(Assignment(row[0],  # id
                                                row[1],   # course id
@@ -26,7 +51,15 @@ class AssignmentManager:
                                                row[7],   # due
                                                row[8],   # recurring
                                                row[9]))  # notification id
-        rows = in_database.get_all_rows_notifications()
+
+    def _init_notifications_(self):
+        """
+        Utility to break up functionality of __init__() into more clear and clean tasks
+        Sets notifications to an empty list, then retrieves all notifications from the database.
+        """
+
+        self._notifications = list()
+        rows = self._database.get_all_rows_notifications()
         for row in rows:
             self._notifications.append(Notification(row[0], # id
                                                    row[1],  # message
@@ -35,8 +68,31 @@ class AssignmentManager:
                                                    row[4],  # assignment_id
                                                    row[5])) # sub_assignment_id
 
-    # Utility for creating assignments
+    """
+    Function Section
+    ===== Object Creation =====
+    """
+
     def create_assignment(self, assignment_id, course_id=None, name=None, type=None, weight=None, priority=None, completed=None, due=None, recurring=None, notification_id=None):
+        """
+        Utility for creating assignment objects.
+
+        Parameters:
+            assignment_id (int):
+            course_id (int):
+            name (string):
+            type (str):
+            weight (string):
+            priority (int):
+            completed (boolean):
+            due (datetime):
+            recurring (boolean):
+            notification_id (int):
+
+        Returns:
+            Assignment (object)
+        """
+
         return Assignment(assignment_id,    # We can probably use len(_assignments) if we never remove assignments.
                           course_id,
                           name,
@@ -48,52 +104,85 @@ class AssignmentManager:
                           recurring,
                           notification_id)
 
-    # Utility for creating notifications
-    def create_notification(self, notification_id, message=None, delivery_method=None, send_at=None, assignment_id=None, sub_assignment_id=None):
+    def create_notification(self, notification_id, sub_assignment_id=None, message=None, delivery_method=None, send_at=None):
+        """
+        Utility for creating notification objects.
+
+        Parameters:
+            notification_id (int): A unique identifier used as a primary key in the SQL database
+            sub_assignment_id (int): Foriegn key identifying the assignments that this notification references.
+            message (string): Literal string to display when notification is sent out.
+            delivery_method (int, enum, Literal @todo: figure this out):
+
+        Returns:
+            Notification (object)
+        """
+
         return Notification(notification_id,    # Same comment as create_assignment(); we can probably use len(self._notifications) if we never remove any notifications.
                            message,
                            delivery_method,
                            send_at,
-                           assignment_id,
                            sub_assignment_id)
-    
-    # Function for adding notifications when additional assignments get added
+
+    """
+    Function Section
+    ===== Addition =====
+    """
+
     def add_notification(self, in_notification):
+        """Function for adding notifications when additional assignments get added."""
+
         self._database.add_row_notifications(in_notification)
-    
-    # Function for user to add additional assignments.
+
     def add_assignment(self, in_assignment):
+        """Function for user to add additional assignments."""
+
         self._assignments.append(in_assignment)
         self._database.add_row_assignments(in_assignment)
         if not in_assignment.get_completed:
             self.add_notification(self.create_notification(len(self._notifications)))
 
-    # Function for user to remove assignments.
+    """
+    Function Section
+    ===== Removal =====
+    """
+
     def remove_assignment(self, in_assignment):
+        """Function for user to remove assignments."""
+
         in_assignment.on_removed()
         self._assignments.remove(in_assignment)
         self._database.remove_row_assignments(in_assignment.get_id())
 
-    # Overloaded version to allow passing assignment_id.
     def remove_assignment_from_id(self, id):
+        """Overloaded version to allow passing assignment_id."""
+
         del self._assignments[id]
         self._database.remove_row_assignments(id)
 
-    # Returns all assignments that are internally marked as completed.
+    """
+    Function Section
+    ===== Viewing =====
+    """
+
     def view_completed_assignments(self):
+        """Returns all assignments that are internally marked as completed."""
+
         completed_assignments = []
         for a in self._assignments:
             if a.get_completed():
                 completed_assignments.append(a)
         return completed_assignments
 
-    # Sets a given assignment to repeat
     def set_repeating_assignment(self, in_assignment, repeats):
+        """Sets a given assignment to repeat."""
+
         in_assignment.set_recurring(repeats)
         self._database.update_row_assignments_recurring(in_assignment)
 
-    # Exports assignments to csv file
     def export_assignments(self, filename):
+        """Exports assignments to csv file."""
+
         with open(filename, 'w', newline='') as csvfile:
             fieldnames = ['assignment_id', 'course_id', 'name','type', 'weight', 'priority', 'completed', 'due', 'recurring', 'notification_id']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -112,4 +201,3 @@ class AssignmentManager:
             #                   'notification_id': assignment.get_notification_id})
             #
             # Hey you can actually just use the self._assignments variable for this since it should be the exact same as the database.
-
