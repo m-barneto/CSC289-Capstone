@@ -145,7 +145,7 @@ async def add_assignment(req: Request):
 
 def context(req: Request):
     url = req.url.path
-    return {'calendar': AssignmentCRUD.get_all_assignments()}
+    return {'assignments': AssignmentCRUD.get_all_assignments()}
 
 templates = Jinja2Templates(directory='static/templates', context_processors=[context])
 

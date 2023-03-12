@@ -7,7 +7,7 @@
 </head>
 
 <body>
-  <link href="/add_assignment/css/main.css" rel="stylesheet">
+    <link href="/add_assignment/css/main.css" rel="stylesheet">
     <header>
         <div class="container">
             <img src="/add_assignment/logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
@@ -41,8 +41,8 @@
                     <th>Due Date</th>
                     <th>Grade Weight</th>
                 </tr>
-                {% for assignment in calendar %}
-                
+                {% for assignment in assignments %}
+
                 <tr>
                     <td>{{assignment.name}}</td>
                     <td>{{assignment.course_id}}</td>
