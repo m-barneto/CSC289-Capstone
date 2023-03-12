@@ -5,6 +5,8 @@ from starlette.routing import Route
 from starlette.routing import Mount
 from starlette.staticfiles import StaticFiles
 from starlette.requests import Request
+from starlette.templating import Jinja2Templates
+
 
 import sqlite3
 from sqlite3 import Error
@@ -141,14 +143,20 @@ async def add_assignment(req: Request):
     #con.commit()
 
 
+def context(req: Request):
+    url = req.url.path
+    return {'calendar': AssignmentCRUD.get_all_assignments()}
+
+templates = Jinja2Templates(directory='static/templates', context_processors=[context])
+
+async def calendar(request):
+    return templates.TemplateResponse('calendar.html', {'request': request})
+
 app = Starlette(debug=True, routes=[
-    #Route('/', homepage),
+    # Route('/', app=StaticFiles(directory='static')),
     Route('/req', endpoint=post_req, methods=['POST']),
     Route('/req', endpoint=get_req, methods=['GET']),
-    # Route('/index'),
-    # Route('/calendar_view', methods=['GET']),
-    # Route('/edit_assignment', methods=['POST']),
-    # Route('/remove_assignment', methods=['GET', 'POST'])
+    Route('/calendar', endpoint=calendar),
     Mount('/add_assignment', app=StaticFiles(directory='static')),
     Route('/add_assignment.html', endpoint=add_assignment, methods=['POST']),
 ])

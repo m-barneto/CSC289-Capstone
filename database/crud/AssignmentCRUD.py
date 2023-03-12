@@ -13,7 +13,7 @@ class AssignmentCRUD:
     """
 
     sql_assignment_select_all = """
-                SELECT * FROM assignments WHERE completed=TRUE
+                SELECT * FROM assignments
     """
     
     @staticmethod
@@ -25,7 +25,6 @@ class AssignmentCRUD:
     @staticmethod
     def get_all_assignments():
         with sqlite3.connect("storage.db") as conn:
-            assignments = []
             val = conn.execute(AssignmentCRUD.sql_assignment_select_all).fetchall()
             return [Assignment(*i) for i in val]
 
