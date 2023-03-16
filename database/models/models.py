@@ -49,7 +49,8 @@ class Course:
     online: bool
     dropped: bool
     color: str
-    assignments: list[Assignment]
+    def params(self):
+        return self.id, self.name, self.section, self.professor, self.online, self.dropped, self.color
 
 
 @dataclass

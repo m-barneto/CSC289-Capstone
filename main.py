@@ -11,6 +11,7 @@ from starlette.templating import Jinja2Templates
 import sqlite3
 from sqlite3 import Error
 from database.crud.AssignmentCRUD import AssignmentCRUD
+from database.crud.CourseCRUD import CourseCRUD
 
 from database.models.UserModel import UserModel
 from database.models.models import Assignment
@@ -144,8 +145,7 @@ async def add_assignment(req: Request):
 
 
 def context(req: Request):
-    url = req.url.path
-    return {'assignments': AssignmentCRUD.get_all_assignments()}
+    return {'assignments': AssignmentCRUD.get_all_assignments(), 'courses': CourseCRUD.get_all_courses_map()}
 
 templates = Jinja2Templates(directory='static/templates', context_processors=[context])
 
