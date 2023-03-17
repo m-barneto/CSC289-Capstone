@@ -4,13 +4,14 @@
 <head>
     <title>UI for Group Project</title>
     <meta charset="UTF-8">
+
 </head>
 
 <body>
-    <link href="/add_assignment/css/main.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
     <header>
         <div class="container">
-            <img src="/add_assignment/logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
+            <img src="logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
             <nav>
                 <ul id="nav">
                     <li><button onclick="window.location.href='index.html';">Main Menu</button></li>
@@ -23,7 +24,7 @@
         </div>
     </header>
     <div class="main_menu">
-        <h1>Main Menu</h1>
+        <h1>Add Assignment</h1>
         <div>
             <nav>
                 <ul>
@@ -33,26 +34,25 @@
                 </ul>
             </nav>
         </div>
-        <div>
-            <table>
-                <tr>
-                    <th></th>
-                    <th>Assignment</th>
-                    <th>Class</th>
-                    <th>Due Date</th>
-                    <th>Grade Weight</th>
-                </tr>
-            {% for assignment in assignments %}
-                <tr>
-                    <td></td>
-                    <td>{{assignment.name}}</td>
-                    <td>{{courses[assignment.course_id].name}}</td>
-                    <td>{{assignment.due}}</td>
-                    <td>{{assignment.weight}}</td>
-                </tr>
+        <form id="assignment_info" action="/add_assignment.html" method="post">
+            <label>Assignment Name:</label> <br>
+            <input type="text" id="assignment_name" name="assignment_name" placeholder="Assignment Name">
+            <br>
+            <label for="course">Course:</label>
+            <select id="course" name="course">
+            {% for course in courses %}
+                <option value="{{course.id}}">{{course.name}}</option>
             {% endfor %}
-            </table>
-        </div>
+            </select>
+            <br>
+            <label>Due Date:</label> <br>
+            <input type="date" id="due_date" name="due_date">
+            <br>
+            <label>Grade Weight:</label> <br>
+            <input type="text" id="grade_weight" name="grade_weight" placeholder="Grade Weight">
+            <br>
+            <input type="submit" id="submit_button">Add Assignment</input>
+        </form>
     </div>
 </body>
 
