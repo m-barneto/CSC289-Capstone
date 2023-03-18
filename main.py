@@ -155,6 +155,9 @@ templates = Jinja2Templates(directory='static/templates', context_processors=[co
 async def calendar(req):
     return templates.TemplateResponse('calendar.html', {'request': req})
 
+async def calendar_grid(req):
+    return templates.TemplateResponse('calendar_grid.html', {'request': req})
+
 async def add_assignment(req):
     return templates.TemplateResponse('add_assignment.html', {'request': req})
 
@@ -164,6 +167,7 @@ app = Starlette(debug=True, routes=[
     Route('/req', endpoint=get_req, methods=['GET']),
     Route('/calendar', endpoint=calendar),
     Route('/add_assignment_temp', endpoint=add_assignment),
+    Route('/calendar_grid', endpoint=calendar_grid),
     Mount('/add_assignment', app=StaticFiles(directory='static')),
     Route('/add_assignment.html', endpoint=add_assignment, methods=['POST']),
 ])

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>UI for Group Project</title>
+    <meta charset="UTF-8">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            color: #fff;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.2);
+            height: calc(60px * 10);
+        }
+
+        td,
+        th {
+            border: none;
+            text-align: center;
+            padding: 0;
+            width: 60px;
+            height: 60px;
+            background-color: #2b2b2b;
+            color: #fff;
+        }
+
+        th {
+            background-color: #1a1a1a;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        td:hover {
+            background-color: #1a1a1a;
+            cursor: pointer;
+        }
+
+        td.today {
+            background-color: #4c8caf;
+            color: #000;
+        }
+
+        #calendar {
+            width: 60%;
+            margin: auto;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        function generateCalendar(year, month) {
+            var calendarTable = "<table>";
+            calendarTable += "<thead>";
+            calendarTable += "<tr>";
+            calendarTable += "<th colspan='7'>" + getMonthName(month) + " " + year + "</th>";
+            calendarTable += "</tr>";
+            calendarTable += "<tr>";
+            calendarTable += "<th>Sun</th>";
+            calendarTable += "<th>Mon</th>";
+            calendarTable += "<th>Tue</th>";
+            calendarTable += "<th>Wed</th>";
+            calendarTable += "<th>Thu</th>";
+            calendarTable += "<th>Fri</th>";
+            calendarTable += "<th>Sat</th>";
+            calendarTable += "</tr>";
+            calendarTable += "</thead>";
+            calendarTable += "<tbody>";
+            var date = new Date(year, month - 1, 1);
+            var dayOfWeek = date.getDay();
+            var daysInMonth = new Date(year, month, 0).getDate();
+            var currentDay = 1;
+            var numRows = Math.ceil((dayOfWeek + daysInMonth) / 7);
+            for (var i = 0; i < numRows; i++) {
+                calendarTable += "<tr>";
+                for (var j = 0; j < 7; j++) {
+                    if (i == 0 && j < dayOfWeek) {
+                        calendarTable += "<td></td>";
+                    } else if (currentDay > daysInMonth) {
+                        calendarTable += "<td></td>";
+                    } else {
+                        var today = new Date();
+                        if (year == today.getFullYear() && month == today.getMonth() + 1 && currentDay == today.getDate()) {
+                            calendarTable += "<td class='today'>" + currentDay + "</td>";
+                        } else {
+                            calendarTable += "<td>" + currentDay + "</td>";
+                        }
+                        currentDay++;
+                    }
+                }
+                calendarTable += "</tr>";
+            }
+            calendarTable += "</tbody>";
+            calendarTable += "</table>";
+            document.getElementById("calendar").innerHTML = calendarTable;
+        }
+
+        function getMonthName(month) {
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return monthNames[month - 1];
+        }
+    </script>
+</head>
+
+<body onload="generateCalendar(new Date().getFullYear(), new Date().getMonth() + 1)">
+    <link href="/add_assignment/css/main.css" rel="stylesheet">
+    <header>
+        <div class="container">
+            <img src="/add_assignment/logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
+            <nav>
+                <ul id="nav">
+                    <li><button onclick="window.location.href='index.html';">Main Menu</button></li>
+                    <li><button onclick="window.location.href='calendar_view.html';">View Calendar</button></li>
+                    <li><button href="">Save</button></li>
+                    <li><button href="">Import</button></li>
+                    <li><button href="">Export</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="main_menu">
+        <h1>Main Menu</h1>
+        <div>
+            <nav>
+                <ul>
+                    <li><button onclick="window.location.href='add_assignment.html';">Add Assignment</button></li>
+                    <li><button onclick="window.location.href='edit_assignment.html';">Edit Assignment</button></li>
+                    <li><button onclick="window.location.href='remove_assignment.html';">Remove Assignment</button></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div id="calendar"></div>
+</body>
