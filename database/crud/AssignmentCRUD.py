@@ -1,3 +1,4 @@
+from dataclasses import asdict
 import sqlite3
 from ..models.models import Assignment
 from datetime import datetime
@@ -27,6 +28,14 @@ class AssignmentCRUD:
         with sqlite3.connect("storage.db") as conn:
             val = conn.execute(AssignmentCRUD.sql_assignment_select_all).fetchall()
             return [Assignment(*i) for i in val]
+    
+    @staticmethod
+    def get_all_assignments_map():
+        assignments = AssignmentCRUD.get_all_assignments()
+        mapped_assignments = {}
+        for assignment in assignments:
+            mapped_assignments[assignment.id] = asdict(assignment)
+        return mapped_assignments
 
     @staticmethod
     def get_completed_assignments():

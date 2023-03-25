@@ -147,7 +147,8 @@ async def add_assignment(req: Request):
 def context(req: Request):
     return {'assignments': AssignmentCRUD.get_all_assignments(), 
             'courses': CourseCRUD.get_all_courses_map(),
-            
+            'assignments_mapped_json': AssignmentCRUD.get_all_assignments_map(),
+            'courses_mapped_json': CourseCRUD.get_all_courses_mapped_json()
     }
 
 templates = Jinja2Templates(directory='static/templates', context_processors=[context])
@@ -162,7 +163,6 @@ async def add_assignment(req):
     return templates.TemplateResponse('add_assignment.html', {'request': req})
 
 app = Starlette(debug=True, routes=[
-    # Route('/', app=StaticFiles(directory='static')),
     Route('/req', endpoint=post_req, methods=['POST']),
     Route('/req', endpoint=get_req, methods=['GET']),
     Route('/calendar', endpoint=calendar),

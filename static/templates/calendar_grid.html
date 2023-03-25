@@ -26,6 +26,10 @@
             color: #fff;
         }
 
+        td {
+            vertical-align: top;
+        }
+
         th {
             background-color: #1a1a1a;
             font-weight: bold;
@@ -48,9 +52,19 @@
             border: none;
             border-radius: 5px;
         }
+        .bar {
+
+            height: 15px;
+            width: 100%;
+            text-align: left;
+            padding-left: 5px;
+            padding-top: 5px;
+            color: white;
+        }
     </style>
+    {% block javascript %}
     <script>
-        function generateCalendar(year, month) {
+        function generateCalendar(year, month, assignments, courses) {
             var calendarTable = "<table>";
             calendarTable += "<thead>";
             calendarTable += "<tr>";
@@ -67,6 +81,8 @@
             calendarTable += "</tr>";
             calendarTable += "</thead>";
             calendarTable += "<tbody>";
+
+            console.log(assignments);
             var date = new Date(year, month - 1, 1);
             var dayOfWeek = date.getDay();
             var daysInMonth = new Date(year, month, 0).getDate();
@@ -82,10 +98,11 @@
                     } else {
                         var today = new Date();
                         if (year == today.getFullYear() && month == today.getMonth() + 1 && currentDay == today.getDate()) {
-                            calendarTable += "<td class='today'>" + currentDay + "</td>";
+                            calendarTable += "<td class='today' id='" + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + currentDay + "'><div class='bar'>" + currentDay + "</div>";
                         } else {
-                            calendarTable += "<td>" + currentDay + "</td>";
+                            calendarTable += "<td id='" + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + currentDay + "'><div class='bar'>" + currentDay + "</div>";
                         }
+                        calendarTable += "</td>";
                         currentDay++;
                     }
                 }
@@ -94,6 +111,17 @@
             calendarTable += "</tbody>";
             calendarTable += "</table>";
             document.getElementById("calendar").innerHTML = calendarTable;
+            
+            for (let [key, value] of Object.entries(assignments)) {
+                var td = document.getElementById(value['due']);
+                if (td) {
+                    var bar = document.createElement('div');
+                    bar.className = 'bar';
+                    bar.innerHTML = value['name'];
+                    bar.style.backgroundColor = '#' + courses[value['course_id']]['color'] + '33';
+                    td.appendChild(bar);
+                }
+            }
         }
 
         function getMonthName(month) {
@@ -101,9 +129,10 @@
             return monthNames[month - 1];
         }
     </script>
+    {% endblock %}
 </head>
 
-<body onload="generateCalendar(new Date().getFullYear(), new Date().getMonth() + 1)">
+<body onload="generateCalendar(new Date().getFullYear(), new Date().getMonth() + 1, {{assignments_mapped_json}}, {{courses_mapped_json}})">
     <link href="/add_assignment/css/main.css" rel="stylesheet">
     <header>
         <div class="container">

@@ -1,3 +1,4 @@
+from dataclasses import asdict
 import sqlite3
 from ..models.models import Course
 
@@ -17,5 +18,12 @@ class CourseCRUD:
         mapped_courses = {}
         for course in courses:
             mapped_courses[course.id] = course
+        return mapped_courses
+
+    def get_all_courses_mapped_json():
+        courses = CourseCRUD.get_all_courses()
+        mapped_courses = {}
+        for course in courses:
+            mapped_courses[course.id] = asdict(course)
         return mapped_courses
 

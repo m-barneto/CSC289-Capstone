@@ -105,8 +105,8 @@ def populate():
         # create random 2023 due dates for each assignment
         assignment_due_dates_list = [
             "2023-"
-            + f"{random.choice(range(1, 13)):02}-"
-            + f"{random.choice(range(1, 29)):02}"
+            + f"3-"
+            + f"{random.choice(range(1, 29))}"
             for _ in range(ASSIGNMENT_NUM_ENTRIES)
         ]
         assignment_recurring = [
@@ -158,7 +158,7 @@ def populate():
             "Steffes, Ryan B.",
             "Swearingen, Brad J.",
         ]
-        color_list = ["Red", "Blue", "Orange", "Pink", "Green", "Yellow", "Violet"]
+        color_list = ["FF0000", "0000FF", "FFA500", "FFC0CB", "00FF00", "FFFF00", "8F00FF"]
         course_names = [
             random.choice(course_names_list) for _ in range(COURSE_NUM_ENTRIES)
         ]
