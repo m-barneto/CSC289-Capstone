@@ -52,13 +52,15 @@
             border: none;
             border-radius: 5px;
         }
+
         .bar {
 
             height: 15px;
             width: 100%;
             text-align: left;
             padding-left: 5px;
-            padding-top: 5px;
+            padding-top: 1px;
+            padding-bottom: 1px;
             color: white;
         }
     </style>
@@ -111,14 +113,14 @@
             calendarTable += "</tbody>";
             calendarTable += "</table>";
             document.getElementById("calendar").innerHTML = calendarTable;
-            
+
             for (let [key, value] of Object.entries(assignments)) {
                 var td = document.getElementById(value['due']);
                 if (td) {
                     var bar = document.createElement('div');
                     bar.className = 'bar';
                     bar.innerHTML = value['name'];
-                    bar.style.backgroundColor = '#' + courses[value['course_id']]['color'] + '33';
+                    bar.style.backgroundColor = '#' + courses[value['course_id']]['color'];
                     td.appendChild(bar);
                 }
             }
@@ -132,7 +134,8 @@
     {% endblock %}
 </head>
 
-<body onload="generateCalendar(new Date().getFullYear(), new Date().getMonth() + 1, {{assignments_mapped_json}}, {{courses_mapped_json}})">
+<body
+    onload="generateCalendar(new Date().getFullYear(), new Date().getMonth() + 1, {{assignments_mapped_json}}, {{courses_mapped_json}})">
     <link href="/add_assignment/css/main.css" rel="stylesheet">
     <header>
         <div class="container">

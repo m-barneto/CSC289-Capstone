@@ -4,10 +4,39 @@
 <head>
     <title>UI for Group Project</title>
     <meta charset="UTF-8">
+    <style>
+        table.sortable th button span {
+            position: absolute;
+        }
+
+        table.sortable th[aria-sort="descending"] span::after {
+            content: "▼";
+            color: currentcolor;
+            font-size: 100%;
+            top: 0;
+        }
+
+        table.sortable th[aria-sort="ascending"] span::after {
+            content: "▲";
+            color: currentcolor;
+            font-size: 100%;
+            top: 0;
+        }
+
+        table.show-unsorted-icon th:not([aria-sort]) button span::after {
+            content: "♢";
+            color: currentcolor;
+            font-size: 100%;
+            position: relative;
+            top: -3px;
+        }
+    </style>
 </head>
 
 <body>
     <link href="/add_assignment/css/main.css" rel="stylesheet">
+    <script
+        src="https://www.w3.org/WAI/content-assets/wai-aria-practices/patterns/table/examples/js/sortable-table.js"></script>
     <header>
         <div class="container">
             <img src="/add_assignment/logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
@@ -33,24 +62,48 @@
                 </ul>
             </nav>
         </div>
-        <div>
-            <table>
-                <tr>
-                    <th></th>
-                    <th>Assignment</th>
-                    <th>Class</th>
-                    <th>Due Date</th>
-                    <th>Grade Weight</th>
-                </tr>
-                {% for assignment in assignments %}
-                <tr>
-                    <td></td>
-                    <td>{{assignment.name}}</td>
-                    <td>{{courses[assignment.course_id].name}}</td>
-                    <td>{{assignment.due}}</td>
-                    <td>{{assignment.weight}}</td>
-                </tr>
-                {% endfor %}
+        <div class="table-wrap">
+            <table class="sortable show-unsorted-icon">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <button>
+                                Assignment
+                                <span></span>
+                            </button>
+                        </th>
+                        <th aria-sort="ascending">
+                            <button>
+                                Class
+                                <span></span>
+                            </button>
+                        </th>
+                        <th>
+                            <button>
+                                Due Date
+                                <span></span>
+                            </button>
+                        </th>
+                        <th class="num">
+                            <button>
+                                Grade Weight
+                                <span></span>
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignments %}
+                    <tr>
+                        <td></td>
+                        <td>{{assignment.name}}</td>
+                        <td>{{courses[assignment.course_id].name}}</td>
+                        <td>{{assignment.due}}</td>
+                        <td class="num">{{assignment.weight}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
