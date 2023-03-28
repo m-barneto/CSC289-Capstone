@@ -104,16 +104,9 @@ def populate_db():
             conn.close()
 
 
-async def homepage(request):
-    return JSONResponse({'hello': 'world'})
+async def homepage(req):
+    return templates.TemplateResponse('index.html', {'request': req})
 
-
-async def get_req(req):
-    return JSONResponse({'aaaaaa': 'bbbbbbbbb'})
-
-
-async def post_req(req):
-    return JSONResponse({'cccc': 'ddddddd'})
 
 
 init_db()
@@ -163,11 +156,10 @@ async def add_assignment(req):
     return templates.TemplateResponse('add_assignment.html', {'request': req})
 
 app = Starlette(debug=True, routes=[
-    Route('/req', endpoint=post_req, methods=['POST']),
-    Route('/req', endpoint=get_req, methods=['GET']),
+    Route('/', endpoint=homepage),
     Route('/calendar', endpoint=calendar),
     Route('/add_assignment_temp', endpoint=add_assignment),
     Route('/calendar_grid', endpoint=calendar_grid),
-    Mount('/add_assignment', app=StaticFiles(directory='static')),
+    Mount('/', app=StaticFiles(directory='static')),
     Route('/add_assignment.html', endpoint=add_assignment, methods=['POST']),
 ])
