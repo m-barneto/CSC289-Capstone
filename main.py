@@ -144,7 +144,7 @@ def context(req: Request):
             'courses_mapped_json': CourseCRUD.get_all_courses_mapped_json()
     }
 
-templates = Jinja2Templates(directory='static/templates', context_processors=[context])
+templates = Jinja2Templates(directory='templates', context_processors=[context])
 
 async def calendar(req):
     return templates.TemplateResponse('calendar.html', {'request': req})
@@ -157,9 +157,9 @@ async def add_assignment(req):
 
 app = Starlette(debug=True, routes=[
     Route('/', endpoint=homepage),
+    Mount('/', app=StaticFiles(directory='public')),
     Route('/calendar', endpoint=calendar),
     Route('/add_assignment_temp', endpoint=add_assignment),
     Route('/calendar_grid', endpoint=calendar_grid),
-    Mount('/', app=StaticFiles(directory='static')),
     Route('/add_assignment.html', endpoint=add_assignment, methods=['POST']),
 ])
