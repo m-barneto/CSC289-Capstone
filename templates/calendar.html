@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>UI for Group Project</title>
+    <meta charset="UTF-8">
+    <style>
+        table.sortable th button span {
+            position: absolute;
+        }
+
+        table.sortable th[aria-sort="descending"] span::after {
+            content: "▼";
+            color: currentcolor;
+            font-size: 100%;
+            top: 0;
+        }
+
+        table.sortable th[aria-sort="ascending"] span::after {
+            content: "▲";
+            color: currentcolor;
+            font-size: 100%;
+            top: 0;
+        }
+
+        table.show-unsorted-icon th:not([aria-sort]) button span::after {
+            content: "♢";
+            color: currentcolor;
+            font-size: 100%;
+            position: relative;
+            top: -3px;
+        }
+    </style>
+</head>
+
+<body>
+    <link href="/add_assignment/css/main.css" rel="stylesheet">
+    <script
+        src="https://www.w3.org/WAI/content-assets/wai-aria-practices/patterns/table/examples/js/sortable-table.js"></script>
+    <header>
+        <div class="container">
+            <img src="/add_assignment/logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
+            <nav>
+                <ul id="nav">
+                    <li><button onclick="window.location.href='index.html';">Main Menu</button></li>
+                    <li><button onclick="window.location.href='calendar_view.html';">View Calendar</button></li>
+                    <li><button href="">Save</button></li>
+                    <li><button href="">Import</button></li>
+                    <li><button href="">Export</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="main_menu">
+        <h1>Main Menu</h1>
+        <div>
+            <nav>
+                <ul>
+                    <li><button onclick="window.location.href='add_assignment.html';">Add Assignment</button></li>
+                    <li><button onclick="window.location.href='edit_assignment.html';">Edit Assignment</button></li>
+                    <li><button onclick="window.location.href='remove_assignment.html';">Remove Assignment</button></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="table-wrap">
+            <table class="sortable show-unsorted-icon">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <button>
+                                Assignment
+                                <span></span>
+                            </button>
+                        </th>
+                        <th aria-sort="ascending">
+                            <button>
+                                Class
+                                <span></span>
+                            </button>
+                        </th>
+                        <th>
+                            <button>
+                                Due Date
+                                <span></span>
+                            </button>
+                        </th>
+                        <th class="num">
+                            <button>
+                                Grade Weight
+                                <span></span>
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assignment in assignments %}
+                    <tr>
+                        <td></td>
+                        <td>{{assignment.name}}</td>
+                        <td>{{courses[assignment.course_id].name}}</td>
+                        <td>{{assignment.due}}</td>
+                        <td class="num">{{assignment.weight}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

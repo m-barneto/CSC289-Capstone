@@ -5,10 +5,13 @@ from starlette.routing import Route
 from starlette.routing import Mount
 from starlette.staticfiles import StaticFiles
 from starlette.requests import Request
+from starlette.templating import Jinja2Templates
+
 
 import sqlite3
 from sqlite3 import Error
 from database.crud.AssignmentCRUD import AssignmentCRUD
+from database.crud.CourseCRUD import CourseCRUD
 
 from database.models.UserModel import UserModel
 from database.models.models import Assignment
@@ -101,16 +104,9 @@ def populate_db():
             conn.close()
 
 
-async def homepage(request):
-    return JSONResponse({'hello': 'world'})
+async def homepage(req):
+    return templates.TemplateResponse('index.html', {'request': req})
 
-
-async def get_req(req):
-    return JSONResponse({'aaaaaa': 'bbbbbbbbb'})
-
-
-async def post_req(req):
-    return JSONResponse({'cccc': 'ddddddd'})
 
 
 init_db()
@@ -141,14 +137,29 @@ async def add_assignment(req: Request):
     #con.commit()
 
 
+def context(req: Request):
+    return {'assignments': AssignmentCRUD.get_all_assignments(), 
+            'courses': CourseCRUD.get_all_courses_map(),
+            'assignments_mapped_json': AssignmentCRUD.get_all_assignments_map(),
+            'courses_mapped_json': CourseCRUD.get_all_courses_mapped_json()
+    }
+
+templates = Jinja2Templates(directory='templates', context_processors=[context])
+
+async def calendar(req):
+    return templates.TemplateResponse('calendar.html', {'request': req})
+
+async def calendar_grid(req):
+    return templates.TemplateResponse('calendar_grid.html', {'request': req})
+
+async def add_assignment(req):
+    return templates.TemplateResponse('add_assignment.html', {'request': req})
+
 app = Starlette(debug=True, routes=[
-    #Route('/', homepage),
-    Route('/req', endpoint=post_req, methods=['POST']),
-    Route('/req', endpoint=get_req, methods=['GET']),
-    # Route('/index'),
-    # Route('/calendar_view', methods=['GET']),
-    # Route('/edit_assignment', methods=['POST']),
-    # Route('/remove_assignment', methods=['GET', 'POST'])
-    Mount('/add_assignment', app=StaticFiles(directory='static')),
+    Route('/', endpoint=homepage),
+    Mount('/', app=StaticFiles(directory='public')),
+    Route('/calendar', endpoint=calendar),
+    Route('/add_assignment_temp', endpoint=add_assignment),
+    Route('/calendar_grid', endpoint=calendar_grid),
     Route('/add_assignment.html', endpoint=add_assignment, methods=['POST']),
 ])
