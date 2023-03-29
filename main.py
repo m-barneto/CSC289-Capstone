@@ -85,57 +85,12 @@ def init_db():
         if conn:
             conn.close()
 
-
-def populate_db():
-    conn = None
-    try:
-        conn = sqlite3.connect('storage.db')
-        conn.execute('''
-            INSERT INTO 
-            users(user_id, username, password, email, phone_number, degree, semester) 
-            VALUES(?,?,?,?,?,?,?)
-        ''', (0, 'mbarneto', '1234', 'email@gmail.com', '9198675309', 'programming', 'SPR 2023'))
-
-        conn.commit()
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
-
-
 async def homepage(req):
     return templates.TemplateResponse('index.html', {'request': req})
 
 
-
 init_db()
 populate()
-# populate_db()
-user = UserModel.from_username('mbarneto')
-print(user)
-
-
-async def add_assignment(req: Request):
-    data = await req.form()
-    # TODO
-    # convert class_name to class_id
-    # type
-    # weight
-    # priority
-    # recurring
-    # form validation?
-    print(data)
-    assignment = Assignment(0, 0, data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%m/%d/%y'), False, None)
-    AssignmentCRUD.create_assignment(assignment.params())
-    
-    return JSONResponse(data._dict)
-    #return RedirectResponse('/add_assignment/add_assignment.html')
-    #con = sqlite3.connect('storage.db')
-    #query = (courseId, name, type1, weight, priority, completed, due, recurring)
-    #con.execute("INSERT INTO assignments(course_id, name, type, weight, priority, completed, due, recurring) VALUES(?, ?, ?, ?, ?, ?, ?, ?)", query)
-    #con.commit()
-
 
 def context(req: Request):
     return {'assignments': AssignmentCRUD.get_all_assignments(), 
