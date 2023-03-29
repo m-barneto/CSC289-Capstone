@@ -84,6 +84,7 @@ def init_db():
         if conn:
             conn.close()
 
+
 async def homepage(req):
     return templates.TemplateResponse('index.html', {'request': req})
 
