@@ -1,6 +1,6 @@
 from dataclasses import asdict
 import sqlite3
-from ..models.models import Course
+from ..models import Course
 
 class CourseCRUD:
     sql_course_select_all = """

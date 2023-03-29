@@ -1,6 +1,6 @@
 from dataclasses import asdict
 import sqlite3
-from ..models.models import Assignment
+from ..models import Assignment
 from datetime import datetime
 
 class AssignmentCRUD:

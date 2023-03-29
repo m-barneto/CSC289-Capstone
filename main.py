@@ -14,7 +14,7 @@ from database.crud.AssignmentCRUD import AssignmentCRUD
 from database.crud.CourseCRUD import CourseCRUD
 
 from database.models.UserModel import UserModel
-from database.models.models import Assignment
+from database.models import Assignment
 
 from database.pop_db import populate
 
