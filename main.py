@@ -110,11 +110,17 @@ async def calendar_grid(req):
 async def add_assignment(req):
     return templates.TemplateResponse('add_assignment.html', {'request': req})
 
+async def remove_assignment(req):
+    pass
+
 app = Starlette(debug=True, routes=[
     Route('/', endpoint=homepage),
-    Mount('/', app=StaticFiles(directory='public')),
     Route('/calendar', endpoint=calendar),
-    Route('/add_assignment_temp', endpoint=add_assignment),
     Route('/calendar_grid', endpoint=calendar_grid),
+    Route('/add_assignment', endpoint=add_assignment),
+    Route('/remove_assignment', endpoint=remove_assignment),
+
     Route('/add_assignment.html', endpoint=add_assignment, methods=['POST']),
+    
+    Mount('/', app=StaticFiles(directory='public')),
 ])
