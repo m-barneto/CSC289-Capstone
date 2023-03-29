@@ -1,13 +1,21 @@
-import datetime
-
+from datetime import datetime
 from starlette.applications import Starlette
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, Response, RedirectResponse
 from starlette.routing import Route
+from starlette.routing import Mount
+from starlette.staticfiles import StaticFiles
+from starlette.requests import Request
+from starlette.templating import Jinja2Templates
+
 
 import sqlite3
 from sqlite3 import Error
+from database.crud.AssignmentCRUD import AssignmentCRUD
+from database.crud.CourseCRUD import CourseCRUD
 
-from database.models.UserModel import UserModel
+from database.models import Assignment
+
+from database.pop_db import populate
 
 
 def init_db():
@@ -18,7 +26,7 @@ def init_db():
         # Create our tables if they don't already exist
         # TODO: figure out length limits and fix data type/***attributes***
         conn.execute("""CREATE TABLE IF NOT EXISTS users (
-            user_id INT PRIMARY KEY,
+            user_id INTEGER PRIMARY KEY,
             username CHAR[32] UNIQUE,
             password CHAR[32],
             email CHAR[255],
@@ -28,7 +36,7 @@ def init_db():
         """)
 
         conn.execute("""CREATE TABLE IF NOT EXISTS courses (
-            course_id INT NOT NULL PRIMARY KEY,
+            course_id INTEGER PRIMARY KEY,
             name CHAR[32],
             section CHAR[32],
             professor_name CHAR[32],
@@ -39,7 +47,7 @@ def init_db():
 
         # Shouldn't weight just be based on the type of assignment?
         conn.execute("""CREATE TABLE IF NOT EXISTS assignments (
-            assignment_id INT NOT NULL PRIMARY KEY,
+            assignment_id INTEGER PRIMARY KEY,
             course_id INT,
             name CHAR[32],
             type CHAR[32],
@@ -52,10 +60,9 @@ def init_db():
         """)
 
         conn.execute("""CREATE TABLE IF NOT EXISTS subassignments (
-            subassignment_id INT NOT NULL PRIMARY KEY,
+            subassignment_id INTEGER PRIMARY KEY,
             assignment_id INT,
             name CHAR[32],
-            desc TEXT,
             completed BOOL,
             due DATETIME,
             recurring BOOL,
@@ -63,7 +70,7 @@ def init_db():
         """)
 
         conn.execute("""CREATE TABLE IF NOT EXISTS notifications (
-            notification_id INT NOT NULL PRIMARY KEY,
+            notification_id INTEGER PRIMARY KEY,
             message TEXT,
             delivery_method INT,
             send_at DATETIME,
@@ -78,105 +85,42 @@ def init_db():
             conn.close()
 
 
-def populate_db():
-    conn = None
-    try:
-        conn = sqlite3.connect('storage.db')
-        conn.execute('''
-            INSERT INTO 
-            users(user_id, username, password, email, phone_number, degree, semester) 
-            VALUES(?,?,?,?,?,?,?)
-        ''', (0, 'mbarneto', '1234', 'email@gmail.com', '9198675309', 'programming', 'SPR 2023'))
-        conn.commit()
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
-
-
-async def homepage(request):
-    return JSONResponse({'hello': 'world'})
-
-
-async def get_req(req):
-    return JSONResponse({'aaaaaa': 'bbbbbbbbb'})
-
-
-async def post_req(req):
-    return JSONResponse({'cccc': 'ddddddd'})
+async def homepage(req):
+    return templates.TemplateResponse('index.html', {'request': req})
 
 
 init_db()
-populate_db()
-user = UserModel.from_username('mbarneto')
-print(user)
+populate()
+
+def context(req: Request):
+    return {'assignments': AssignmentCRUD.get_all_assignments(), 
+            'courses': CourseCRUD.get_all_courses_map(),
+            'assignments_mapped_json': AssignmentCRUD.get_all_assignments_map(),
+            'courses_mapped_json': CourseCRUD.get_all_courses_mapped_json()
+    }
+
+templates = Jinja2Templates(directory='templates', context_processors=[context])
+
+async def calendar(req):
+    return templates.TemplateResponse('calendar.html', {'request': req})
+
+async def calendar_grid(req):
+    return templates.TemplateResponse('calendar_grid.html', {'request': req})
+
+async def add_assignment(req):
+    return templates.TemplateResponse('add_assignment.html', {'request': req})
+
+async def remove_assignment(req):
+    pass
 
 app = Starlette(debug=True, routes=[
-    Route('/', homepage),
-    Route('/req', endpoint=post_req, methods=['POST']),
-    Route('/req', endpoint=get_req, methods=['GET'])
+    Route('/', endpoint=homepage),
+    Route('/calendar', endpoint=calendar),
+    Route('/calendar_grid', endpoint=calendar_grid),
+    Route('/add_assignment', endpoint=add_assignment),
+    Route('/remove_assignment', endpoint=remove_assignment),
+
+    Route('/add_assignment.html', endpoint=add_assignment, methods=['POST']),
+    
+    Mount('/', app=StaticFiles(directory='public')),
 ])
-
-
-def create_class():
-    courseId = 0
-    className = ""
-    section = ""
-    professor_name = ""
-    online = False
-    dropped = False
-    color = ""
-    # Insert links to HTML input here
-    con = sqlite3.connect('storage.db')
-    query = courseId, className, section, professor_name, online, dropped, color
-    con.execute("INSERT INTO courses VALUES(?, ?, ?, ?, ?, ?, ?)", query)
-    con.commit()
-
-
-def create_assignment():
-    assignmentId = 0
-    courseId = 0
-    name = ""
-    type1 = ""
-    weight = ""
-    priority = 0
-    completed = False
-    due = datetime.today()
-    recurring = False
-    notificationId = 0
-    # Insert links to HTML input here
-    con = sqlite3.connect('storage.db')
-    query = assignmentId, courseId, name, type1, weight, priority, completed, due, recurring, notificationId
-    con.execute("INSERT INTO assignments VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", query)
-    con.commit()
-
-
-def create_subassignment():
-    subassignmentId = 0
-    assignmentId = 0
-    name = ""
-    desc = ""
-    completed = False
-    due = datetime.today()
-    recurring = False
-    notificationId = 0
-    # Insert links to HTML input here
-    con = sqlite3.connect('storage.db')
-    query = subassignmentId, assignmentId, name, desc, completed, due, recurring, notificationId
-    con.execute("INSERT INTO subassignment VALUES(?, ?, ?, ?, ?, ?, ?, ?)", query)
-    con.commit()
-
-
-def create_notification():
-    notificationId = 0
-    message = ""
-    deliveryMethod = 0
-    sendAt = datetime.today()
-    assignmentId = 0
-    subassignmentId = 0
-    # Insert links to HTML input here
-    con = sqlite3.connect('storage.db')
-    query = notificationId, message, deliveryMethod, sendAt, assignmentId, subassignmentId
-    con.execute("INSERT INTO courses VALUES(?, ?, ?, ?, ?, ?)", query)
-    con.commit()
