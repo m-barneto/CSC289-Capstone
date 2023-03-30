@@ -85,10 +85,6 @@ def init_db():
             conn.close()
 
 
-async def homepage(req):
-    return templates.TemplateResponse('index.html', {'request': req})
-
-
 init_db()
 populate()
 
@@ -99,7 +95,12 @@ def context(req: Request):
             'courses_mapped_json': CourseCRUD.get_all_courses_mapped_json()
     }
 
+# Templates
+
 templates = Jinja2Templates(directory='templates', context_processors=[context])
+
+async def homepage(req):
+    return templates.TemplateResponse('index.html', {'request': req})
 
 async def calendar(req):
     return templates.TemplateResponse('calendar.html', {'request': req})
@@ -111,7 +112,18 @@ async def add_assignment(req):
     return templates.TemplateResponse('add_assignment.html', {'request': req})
 
 async def remove_assignment(req):
-    pass
+    return templates.TemplateResponse('remove_assignment.html', {'request': req})
+
+# Endpoints
+
+async def add_assignment_request(req: Request):
+    data = await req.form()
+    assignment = Assignment(0, 0, data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d'), False, None)
+    AssignmentCRUD.create_assignment(assignment.params())
+
+    return templates.TemplateResponse('add_assignment.html', {'request': req})
+
+# Routing
 
 app = Starlette(debug=True, routes=[
     Route('/', endpoint=homepage),
@@ -120,7 +132,8 @@ app = Starlette(debug=True, routes=[
     Route('/add_assignment', endpoint=add_assignment),
     Route('/remove_assignment', endpoint=remove_assignment),
 
-    Route('/add_assignment.html', endpoint=add_assignment, methods=['POST']),
+    Route('/add_assignment.html', endpoint=add_assignment_request, methods=['POST']),
+    Route('/remove_assignment.html', endpoint=remove_assignment, methods=['DELETE']),
     
     Mount('/', app=StaticFiles(directory='public')),
 ])
