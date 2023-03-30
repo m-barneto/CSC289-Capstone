@@ -1,4 +1,15 @@
 class Assignment:
+    """
+    Class for storing information regarding the ASSIGNMENTS
+    Table in the SQL database. Used in conjunction with the
+    AssignmentManager class.
+    """
+
+    """
+    Function Section
+    ======= Defaults =======
+    """
+
     def __init__(self,
                  assignment_id,
                  course_id=None,
@@ -21,7 +32,10 @@ class Assignment:
         self._recurring         = recurring
         self._notification_id   = notification_id
 
-    """ ==== Getters ==== """
+    """
+    Function Section
+    ==== Getters ====
+    """
 
     def get_id(self):
         return self._id
@@ -53,7 +67,10 @@ class Assignment:
     def get_notification_id(self):
         return self._notification_id
 
-    """ ==== Mutators ==== """
+    """
+    Function Section
+    ==== Mutators ====
+    """
 
     def set_id(self, id):
         self._id = id

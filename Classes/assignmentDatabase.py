@@ -2,14 +2,21 @@ import sqlite3
 from sqlite3 import Error
 
 
-# Encapsulates access to the sql database
 class AssignmentDatabase:
+    """Encapsulates access to the sql database."""
 
-    """ Default Function Section """
+    """
+    Function Section
+    ======= Defaults =======
+    """
 
-    # initialize function
-    # formally: init_db()
     def __init__(self):
+        """
+        Constructor function for AssignmentDatabase.
+        Formally, init_db() was used and this class replaces that function
+        As well as provides utility for access to the SQL database.
+        """
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             # Create our tables if they don't already exist
@@ -70,11 +77,12 @@ class AssignmentDatabase:
 
             conn.close()
 
-    # Provide default database data
-    # For testing purposes only
-    #
-    # @todo Validate semicolon neccessity after VALUES() list
     def populate(self):
+        """
+        Provide default database data.
+        For testing purposes only.
+        """
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             # Should there be a semicolon after the VALUES() list?
@@ -87,14 +95,18 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # Make sure to close connection after use.
-    # This is the untouched example from https://www.sqlitetutorial.net/sqlite-python/update/
-    def create_connection(self, db_file):
-        """ create a database connection to the SQLite database
-            specified by the db_file
-        :param db_file: database file
-        :return: Connection object or None
+    def create_connection(self, db_file): # This is the untouched example from https://www.sqlitetutorial.net/sqlite-python/update/
         """
+        Create a database connection to the SQLite database specified by the db_file.
+        Make sure to close connection after use.
+
+        Parameters:
+            db_file (string): path to directory of the database file
+
+        Returns:
+            Connection object or None
+        """
+
         conn = None
         try:
             conn = sqlite3.connect(db_file)
@@ -103,11 +115,14 @@ class AssignmentDatabase:
 
         return conn
 
-    """ Row Modification Section """
-    """ ====== Retrieving ====== """
+    """
+    Row Modification Section
+    ====== Retrieving ======
+    """
 
-    # SELECTs all rows for the ASSIGNMENTS table
     def get_all_rows_assignments(self):
+        """SELECTs all rows from the ASSIGNMENTS table."""
+
         rows = list()
         conn = self.create_connection('storage.db')
         if conn is not None:
@@ -121,8 +136,9 @@ class AssignmentDatabase:
             conn.close()
         return rows
 
-    # SELECTs the row for the ASSIGNMENTS table with the same id
     def get_row_assignments(self, assignment_id):
+        """SELECTs the row from the ASSIGNMENTS table with the same id."""
+
         row = None
         conn = self.create_connection('storage.db')
         if conn is not None:
@@ -134,12 +150,46 @@ class AssignmentDatabase:
             conn.close()
         return row
 
-    """ Row Modification Section """
-    """ ======== Adding ======== """
+    def get_all_rows_notifications(self):
+        """SELECTs all rows from the NOTIFICATIONS table."""
 
-    # SQL pass function to add new row to USERS table
+        rows = list()
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            cursor = conn.cursor()
+            cursor.execute('''
+                SELECT * FROM notifications
+            ''')
+            records = cursor.fetchall()
+            for row in records:
+                rows.append(row)
+            conn.close()
+        return rows
+
+    def get_row_notifications(self, notification_id):
+        """SELECTs the row for the NOTIFICATIONS table with the same id."""
+
+        row = None
+        conn = self.create_connection('storage.db')
+        if conn is not None:
+            cursor = conn.cursor()
+            cursor.execute('''
+            SELECT * FROM notifications WHERE notification_id = ?
+            ''')
+            row = cursor.fetchone()
+            conn.close()
+        return row
+
+    """
+    Row Modification Section
+    ======== Adding ========
+    """
+
     def add_row_users(self, user_id, username, password, email, phone_number, degree, semester):
-        """CREATE TABLE IF NOT EXISTS users (
+        """
+        SQL pass function to add new row to USERS table.
+
+        CREATE TABLE IF NOT EXISTS users (
                 user_id INT PRIMARY KEY,
                 username CHAR[32] UNIQUE,
                 password CHAR[32],
@@ -147,7 +197,8 @@ class AssignmentDatabase:
                 phone_number CHAR[32],
                 degree CHAR[32],
                 semester CHAR[32]);
-            """
+        """
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             # Should there be a semicolon after the VALUES() list?
@@ -160,9 +211,11 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # SQL pass function to add new row to COURSES table
     def add_row_courses(self, course_id, name, section, professor_name, online, dropped, color):
-        """CREATE TABLE IF NOT EXISTS courses (
+        """
+        SQL pass function to add new row to COURSES table.
+
+        CREATE TABLE IF NOT EXISTS courses (
                 course_id INT NOT NULL PRIMARY KEY,
                 name CHAR[32],
                 section CHAR[32],
@@ -170,7 +223,8 @@ class AssignmentDatabase:
                 online BOOL,
                 dropped BOOL,
                 color CHAR[6]);
-            """
+        """
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             # Should there be a semicolon after the VALUES() list?
@@ -183,14 +237,11 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # SQL pass function to add new row to ASSIGNMENTS table
-    # def add_row_assignments(self):
-    #    pass
-    # @todo Add default function with parameters. Overloading in Python doesn't exist and I don't want to have a bunch of different named functions doing the same thing.
-    #
-    # Utility function for adding another row to the assignments table using Assignment class
     def add_row_assignments(self, assignment):
-        """CREATE TABLE IF NOT EXISTS assignments (
+        """
+        SQL pass function to add new row to ASSIGNMENTS table
+
+        CREATE TABLE IF NOT EXISTS assignments (
                 assignment_id INT NOT NULL PRIMARY KEY,
                 course_id INT,
                 name CHAR[32],
@@ -201,7 +252,8 @@ class AssignmentDatabase:
                 due DATETIME,
                 recurring BOOL,
                 notification_id INT);
-            """
+        """
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
@@ -223,15 +275,11 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # SQL pass function to add new row to SUBASSIGNMENTS table
-    # def add_row_subassignments(self):
-    #    pass
-    # @todo Add default function with parameters. Overloading in Python doesn't exist and I don't want to have a bunch of different named functions doing the same thing.
-    #
-    # Utility function for adding another row to the subassignments table using Assignment class
-    # SQL pass function to add new row to SUBASSIGNMENTS table
     def add_row_subassignments(self, subassignment_id, assignment):
-        """CREATE TABLE IF NOT EXISTS subassignments (
+        """
+        SQL pass function to add new row to SUBASSIGNMENTS table
+
+        CREATE TABLE IF NOT EXISTS subassignments (
                 subassignment_id INT NOT NULL PRIMARY KEY,
                 assignment_id INT,
                 name CHAR[32],
@@ -240,7 +288,8 @@ class AssignmentDatabase:
                 due DATETIME,
                 recurring BOOL,
                 notification_id INT);
-            """
+        """
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
@@ -263,16 +312,19 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # SQL pass function to add new row to NOTIFICATIONS table
     def add_row_notifications(self, notification_id, message, delivery_method, send_at, assignment_id, subassignment_id):
-        """CREATE TABLE IF NOT EXISTS notifications (
+        """
+        SQL pass function to add new row to NOTIFICATIONS table
+
+        CREATE TABLE IF NOT EXISTS notifications (
                 notification_id INT NOT NULL PRIMARY KEY,
                 message TEXT,
                 delivery_method INT,
                 send_at DATETIME,
                 assignment_id INT,
                 subassignment_id INT);
-            """
+        """
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
@@ -284,11 +336,14 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    """ Row Modification Section """
-    """ ======= Removing ======= """
+    """ 
+    Row Modification Section 
+    ======= Removing ======= 
+    """
 
-    # SQL pass function to remove row from to USERS table
     def remove_row_users(self, user_id):
+        """SQL pass function to remove row from USERS table."""
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
@@ -298,8 +353,9 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # SQL pass function to remove row from COURSES table
     def remove_row_courses(self, course_id):
+        """SQL pass function to remove row from COURSES table."""
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
@@ -309,8 +365,9 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # SQL pass function to remove row from ASSIGNMENTS table
     def remove_row_assignments(self, assignment_id):
+        """SQL pass function to remove row from ASSIGNMENTS table."""
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
@@ -320,8 +377,9 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # SQL pass function to remove row from SUBASSIGNMENTS table
     def remove_row_subassignments(self, subassignment_id):
+        """SQL pass function to remove row from SUBASSIGNMENTS table."""
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
@@ -331,8 +389,9 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # SQL pass function to remove row from NOTIFICATIONS table
     def remove_row_notifications(self, notification_id):
+        """SQL pass function to remove row from NOTIFICATIONS table."""
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
@@ -342,16 +401,19 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    """ Row Modification Section """
-    """ ======= Updating ======= """
+    """
+    Row Modification Section
+    ======= Updating =======
+    """
 
     def update_row_users(self):
         pass
     def update_row_courses(self):
         pass
 
-    # SQL pass function to update row in ASSIGNMENTS table
     def update_row_assignments(self, assignment):
+        """SQL pass function to update row in ASSIGNMENTS table."""
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
@@ -381,8 +443,9 @@ class AssignmentDatabase:
             conn.commit()
             conn.close()
 
-    # Utility function for only updating the 'recurring' column of a row
     def update_row_assignments_recurring(self, assignment):
+        """Utility function for only updating the 'recurring' column of a row."""
+
         conn = self.create_connection('storage.db')
         if conn is not None:
             conn.execute('''
