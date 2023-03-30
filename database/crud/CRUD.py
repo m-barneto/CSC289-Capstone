@@ -53,7 +53,7 @@ class CRUD:
         con.execute("UPDATE notifications SET ? WHERE ?", new, old)
         con.commit()
 
-     def deleteclass(self):
+    def deleteclass(self):
         con = sqlite3.connect('storage.db')
         con.execute("DELETE FROM class WHERE ?", query)
         con.commit()
