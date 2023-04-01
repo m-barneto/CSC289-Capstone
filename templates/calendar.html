@@ -66,29 +66,24 @@
             <table class="sortable show-unsorted-icon">
                 <thead>
                     <tr>
-                        <th></th>
                         <th>
-                            <button>
+                            <button id="calendar-sortable-button">
                                 Assignment
-                                <span></span>
                             </button>
                         </th>
                         <th>
-                            <button>
+                            <button id="calendar-sortable-button">
                                 Class
-                                <span></span>
                             </button>
                         </th>
                         <th aria-sort="ascending">
-                            <button>
+                            <button id="calendar-sortable-button">
                                 Due Date
-                                <span></span>
                             </button>
                         </th>
                         <th class="num">
-                            <button>
+                            <button id="calendar-sortable-button">
                                 Grade Weight
-                                <span></span>
                             </button>
                         </th>
                     </tr>
@@ -96,7 +91,6 @@
                 <tbody>
                     {% for assignment in assignments %}
                     <tr>
-                        <td></td>
                         <td>{{assignment.name}}</td>
                         <td>{{courses[assignment.course_id].name}}</td>
                         <td>{{assignment.due}}</td>

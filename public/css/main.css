@@ -1,5 +1,8 @@
+/* General Selectors */
+
 body {
     background-color: #121212;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 header {
@@ -13,11 +16,6 @@ header::after {
     clear: both;
 }
 
-.container {
-    width: 85%;
-    margin: 0 auto;
-}
-
 header img {
     float: left;
     margin-top: 5px;
@@ -28,9 +26,8 @@ header nav {
     float: right;
 }
 
-header nav li {
-    display: inline-block;
-    padding: 0px 0px;
+header nav ul {
+    padding: 0;
 }
 
 header nav button {
@@ -41,6 +38,71 @@ header nav button {
     margin-left: 10px;
     cursor: pointer;
     border: 3px solid black;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+}
+
+header nav li {
+    display: inline-block;
+    padding: 0px 0px;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    width: 80%;
+    margin: auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+    background-color: #AFCA9F;
+}
+
+table tbody tr:nth-of-type(odd):hover {
+    background-color: #cee7c0;
+}
+
+table th {
+    background-color: #9fafca;
+}
+
+table tbody tr:last-of-type {
+    border-bottom: 2px solid black;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+table tbody tr:nth-of-type(even) {
+    background-color: #A89FD6;
+}
+
+table tbody tr:nth-of-type(even):hover {
+    background-color: #c3bbe9;
+}
+
+table td {
+    padding: 12px 15px;
+}
+
+td {
+    font-size: 16px;
+}
+
+th {
+    text-align: center;
+    width: 10%;
+    font-size: 20px;
+}
+
+nav button:hover {
+    background-color: #c1d4f4
+}
+
+/* Class Selectors */
+
+.container {
+    width: 85%;
+    margin: 0 auto;
 }
 
 .main_menu {
@@ -49,19 +111,7 @@ header nav button {
     width: 70%;
     margin: 0 auto;
     margin-top: 50px;
-}
-
-.main_menu h1 {
-    text-align: center;
-}
-
-.main_menu ul {
-    text-align: center;
-}
-
-.main_menu li {
-    display: inline-block;
-    padding-bottom: 5px;
+    border-radius: 5px;
 }
 
 .main_menu button {
@@ -71,14 +121,25 @@ header nav button {
     font-size: 20px;
     cursor: pointer;
     border: 3px solid black;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
 }
 
 .main_menu nav button:hover {
     background-color: #c1d4f4;
 }
 
+.main_menu h1 {
+    text-align: center;
+}
+
 .main_menu h2 {
     text-align: center;
+}
+
+.main_menu li {
+    display: inline-block;
+    padding-bottom: 5px;
 }
 
 .main_menu p {
@@ -88,25 +149,26 @@ header nav button {
     margin-left: 10%;
 }
 
+.main_menu ul {
+    text-align: center;
+    list-style-type: none;
+    padding: 0;
+}
+
+.table-wrap {
+    margin-bottom: 20px;
+}
+
+/* Id Selectors */
+
+#assignment {
+    width: 15%;
+}
+
 #assignment_info {
     margin: auto;
     width: 40%;
     padding: 20px;
-}
-
-#assignment_info label {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-#assignment_info input {
-    height: 20px;
-    width: 100%;
-}
-
-#assignment_info textarea {
-    height: 100px;
-    width: 100%;
 }
 
 #assignment_info button {
@@ -114,37 +176,37 @@ header nav button {
     width: 100%;
 }
 
-table {
+#assignment_info input {
+    height: 20px;
+    width: 100%;
+}
+
+#assignment_info label {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+#assignment_info textarea {
+    height: 100px;
+    width: 100%;
+}
+
+#calendar-sortable-button {
+    width: 100%;
     border: 2px solid black;
-    width: 80%;
-    margin: 0 auto;
 }
 
-th {
-    text-align: center;
-    border-left: 2px solid black;
-    border-bottom: 2px solid black;
-    width: 10%;
-    font-size: 20px;
+#calendar-sortable-button:hover {
+    background-color: #c1d4f4
 }
 
-td {
-    border-left: 2px solid black;
-    border-bottom: 2px solid black;
-    font-size: 16px;
+#description {
+    width: 18%;
 }
 
 #remove {
     width: 3%;
     border-left: none;
-}
-
-#assignment {
-    width: 15%;
-}
-
-#description {
-    width: 18%;
 }
 
 #submit_button {
@@ -158,6 +220,18 @@ td {
     border: 3px solid black;
 }
 
-nav button:hover {
-    background-color: #c1d4f4
+/* Media adjustments */
+
+@media (max-width: 1200px) {
+    body {
+        width: 80%;
+    }
 }
+
+@media (max-width: 768px) {
+    body {
+        width: 95%;
+    }
+}
+
+/* @media (max-width: 320px) */
