@@ -33,20 +33,28 @@
                 </ul>
             </nav>
         </div>
-        <form id="assignment_info" action="/add_assignment.html" method="post">
-            <label>Assignment Name:</label> <br>
-            <input type="text" id="assignment_name" name="assignment_name" placeholder="Assignment Name">
+        <form id="assignment_edit" action="/edit_assignment.html" method="POST">
+            <table>
+                <tr>
+                    <th id="edit"></th>
+                    <th id="assignment">Assignment</th>
+                    <th>Class</th>
+                    <th>Due Date</th>
+                    <th>Grade Weight</th>
+                </tr>
+                {% for assignment in assignments %}
+                <tr>
+                    <td><input type="submit" id="submit_button" name="{{assignment.id}}" value="Edit"></input></td>
+                    <!-- <td><input type="radio" name="{{assignment.id}}"></td> -->
+                    <td>{{assignment.name}}</td>
+                    <td>{{courses[assignment.course_id].name}}</td>
+                    <td>{{assignment.due}}</td>
+                    <td class="num">{{assignment.weight}}</td>
+                </tr>
+                {% endfor %}
+            </table>
             <br>
-            <label>Class:</label> <br>
-            <input type="text" id="class_name" name="class_name" placeholder="Class Name">
-            <br>
-            <label>Due Date:</label> <br>
-            <input type="text" id="due_date" name="due_date" placeholder="MM/DD/YY">
-            <br>
-            <label>Grade Weight:</label> <br>
-            <input type="text" id="grade_weight" name="grade_weight" placeholder="Grade Weight">
-            <br>
-            <input type="submit" id="submit_button" value="Submit Changes"></input>
+            <!-- <input type="submit" id="submit_button" value="Edit Assignment"></input> -->
         </form>
     </div>
 </body>

@@ -114,6 +114,9 @@ async def add_assignment(req):
 async def remove_assignment(req):
     return templates.TemplateResponse('remove_assignment.html', {'request': req})
 
+async def edit_assignment(req):
+    return templates.TemplateResponse('edit_assignment.html', {'request': req})
+
 # Endpoints
 
 async def add_assignment_request(req: Request):
@@ -129,6 +132,20 @@ async def remove_assignment_request(req: Request):
         AssignmentCRUD.remove_assignment_by_id(assignment_id)
     return templates.TemplateResponse('remove_assignment.html', {'request': req})
 
+async def edit_assignment_request(req: Request):
+    # get assingment_id from req form
+    data = await req.form()
+    # Get first item in dict since there should only be 1 item total
+    assignment_id = list(data.keys())[0]
+    # Redirect to edit_assignment_single with the assignment model info we want to edit
+    return templates.TemplateResponse('edit_assignment_single.html', {'request': req, 'assignment': AssignmentCRUD.get_assignment_by_id(assignment_id)})
+
+async def edit_assignment_single_request(req: Request):
+    # Apply changes
+
+    # Redirect back to edit assignment selection page
+    return templates.TemplateResponse('edit_assignment.html', {'request': req})
+
 async def import_calendar(req: Request):
     async with req.form() as form:
         filename = form["file"].filename
@@ -143,9 +160,12 @@ app = Starlette(debug=True, routes=[
     Route('/calendar_grid', endpoint=calendar_grid),
     Route('/add_assignment', endpoint=add_assignment),
     Route('/remove_assignment', endpoint=remove_assignment),
+    Route('/edit_assignment', endpoint=edit_assignment),
 
     Route('/add_assignment.html', endpoint=add_assignment_request, methods=['POST']),
     Route('/remove_assignment.html', endpoint=remove_assignment_request, methods=['POST']),
+    Route('/edit_assignment.html', endpoint=edit_assignment_request, methods=['POST']),
+    Route('/edit_assignment_single.html', endpoint=edit_assignment_single_request, methods=['POST']),
     Route('/import_calendar', endpoint=import_calendar, methods=['POST']),
     
     Mount('/', app=StaticFiles(directory='public')),

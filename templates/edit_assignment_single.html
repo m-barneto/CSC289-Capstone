@@ -23,7 +23,7 @@
         </div>
     </header>
     <div class="main_menu">
-        <h1>Remove Assignment</h1>
+        <h1>Edit Assignment</h1>
         <div>
             <nav>
                 <ul>
@@ -33,27 +33,30 @@
                 </ul>
             </nav>
         </div>
-        <form id="assignment_remove" action="/remove_assignment.html" method="POST">
-            <table>
-                <tr>
-                    <th id="remove"></th>
-                    <th id="assignment">Assignment</th>
-                    <th>Class</th>
-                    <th>Due Date</th>
-                    <th>Grade Weight</th>
-                </tr>
-                {% for assignment in assignments %}
-                <tr>
-                    <td><input type="checkbox" name="{{assignment.id}}"></td>
-                    <td>{{assignment.name}}</td>
-                    <td>{{courses[assignment.course_id].name}}</td>
-                    <td>{{assignment.due}}</td>
-                    <td class="num">{{assignment.weight}}</td>
-                </tr>
-                {% endfor %}
-            </table>
+        <form id="assignment_info" action="/edit_assignment_single.html" method="post">
+            <label>Assignment Name:</label> <br>
+            <input type="text" id="assignment_name" name="assignment_name" placeholder="Assignment Name"
+                value="{{assignment.name}}">
             <br>
-            <input type="submit" id="submit_button" value="Remove Assignment"></input>
+            <label for="course">Course:</label>
+            <select id="course" name="course">
+                <option value="{{assignment.course_id}}">{{courses[assignment.course_id].name}}</option>
+                {% for course_id, course in courses.items() if course_id != assignment.course_id %}
+                <option value="{{course.id}}">{{course.name}}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label>Due Date:</label> <br>
+            <input type="date" id="due_date" name="due_date" value="{{assignment.due}}">
+            <br>
+            <label>Grade Weight:</label> <br>
+            <input type="text" id="grade_weight" name="grade_weight" placeholder="Grade Weight"
+                value="{{assignment.weight}}">
+            <br>
+            <!-- <label>Completed:</label> <br>
+            <input type="checkbox" id="completed" name="completed" value="{{assignment.completed}}">
+            <br> -->
+            <input type="submit" id="submit_button" value="Apply Changes"></input>
         </form>
     </div>
 </body>
