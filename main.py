@@ -131,6 +131,12 @@ async def remove_assignment_request(req: Request):
 
     return templates.TemplateResponse('remove_assignment.html', {'request': req})
 
+async def import_calendar(req: Request):
+    async with req.form() as form:
+        filename = form["file"].filename
+        contents = await form["file"].read()
+        print(filename)
+
 # Routing
 
 app = Starlette(debug=True, routes=[
@@ -142,6 +148,7 @@ app = Starlette(debug=True, routes=[
 
     Route('/add_assignment.html', endpoint=add_assignment_request, methods=['POST']),
     Route('/remove_assignment.html', endpoint=remove_assignment_request, methods=['POST']),
+    Route('/import_calendar', endpoint=import_calendar, methods=['POST']),
     
     Mount('/', app=StaticFiles(directory='public')),
 ])

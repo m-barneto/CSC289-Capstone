@@ -17,7 +17,16 @@
                     <li><button onclick="window.location.href='/';">Main Menu</button></li>
                     <li><button onclick="window.location.href='calendar';">View Calendar</button></li>
                     <li><button href="">Save</button></li>
-                    <li><button href="">Import</button></li>
+                    <li>
+                        <form id="import" action="/import_calendar" method="post" enctype="multipart/form-data">
+                            <input type="file" id="hiddenFileUpload"
+                                onChange="document.getElementById('import').submit();" style="display:none;"
+                                name="file" />
+                            <button type="button"
+                                onclick="document.getElementById('hiddenFileUpload').click();">Import</button>
+                        </form>
+
+                    </li>
                     <li><button href="">Export</button></li>
                 </ul>
             </nav>
