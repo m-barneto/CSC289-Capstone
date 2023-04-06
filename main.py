@@ -127,9 +127,6 @@ async def remove_assignment_request(req: Request):
     data = await req.form()
     for assignment_id in data:
         AssignmentCRUD.remove_assignment_by_id(assignment_id)
-    # assignment = Assignment(0, 0, data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d'), False, None)
-    # AssignmentCRUD.create_assignment(assignment.params())
-
     return templates.TemplateResponse('remove_assignment.html', {'request': req})
 
 async def import_calendar(req: Request):
