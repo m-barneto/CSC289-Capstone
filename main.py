@@ -123,6 +123,14 @@ async def add_assignment_request(req: Request):
 
     return templates.TemplateResponse('add_assignment.html', {'request': req})
 
+async def remove_assignment_request(req: Request):
+    data = await req.form()
+    print(data)
+    # assignment = Assignment(0, 0, data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d'), False, None)
+    # AssignmentCRUD.create_assignment(assignment.params())
+
+    return templates.TemplateResponse('remove_assignment.html', {'request': req})
+
 # Routing
 
 app = Starlette(debug=True, routes=[
@@ -133,7 +141,7 @@ app = Starlette(debug=True, routes=[
     Route('/remove_assignment', endpoint=remove_assignment),
 
     Route('/add_assignment.html', endpoint=add_assignment_request, methods=['POST']),
-    Route('/remove_assignment.html', endpoint=remove_assignment, methods=['DELETE']),
+    Route('/remove_assignment.html', endpoint=remove_assignment_request, methods=['POST']),
     
     Mount('/', app=StaticFiles(directory='public')),
 ])
