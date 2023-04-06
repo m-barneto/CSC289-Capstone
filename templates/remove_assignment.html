@@ -42,41 +42,15 @@
                     <th>Due Date</th>
                     <th>Grade Weight</th>
                 </tr>
+                {% for assignment in assignments %}
                 <tr>
-                    <td><input type="checkbox"></td>
-                    <td>Homework Assignment #6</td>
-                    <td>Calculus II</td>
-                    <td>02/15/2023</td>
-                    <td>3%</td>
+                    <td><input type="checkbox" name="{{assignment.id}}"></td>
+                    <td>{{assignment.name}}</td>
+                    <td>{{courses[assignment.course_id].name}}</td>
+                    <td>{{assignment.due}}</td>
+                    <td class="num">{{assignment.weight}}</td>
                 </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>Data</td>
-                    <td>Data</td>
-                    <td>Data</td>
-                    <td>Data</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>Data</td>
-                    <td>Data</td>
-                    <td>Data</td>
-                    <td>Data</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>Data</td>
-                    <td>Data</td>
-                    <td>Data</td>
-                    <td>Data</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>Data</td>
-                    <td>Data</td>
-                    <td>Data</td>
-                    <td>Data</td>
-                </tr>
+                {% endfor %}
             </table>
             <br>
             <input type="submit" id="submit_button" value="Remove Assignment"></input>

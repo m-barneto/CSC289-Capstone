@@ -6,6 +6,10 @@ class CourseCRUD:
     sql_course_select_all = """
                 SELECT * FROM courses
     """
+
+    sql_get_course_id_by_name = """
+                SELECT * FROM courses WHERE name=
+    """
     
     @staticmethod
     def get_all_courses():
@@ -27,3 +31,9 @@ class CourseCRUD:
             mapped_courses[course.id] = asdict(course)
         return mapped_courses
 
+    @staticmethod
+    def get_course_id_by_name(course_name):
+        courses = CourseCRUD.get_all_courses()
+        for course in courses:
+            if course.name == course_name:
+                return course.id

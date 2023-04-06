@@ -21,6 +21,10 @@ class AssignmentCRUD:
                 SELECT * FROM assignments WHERE due BETWEEN ? AND ?
     """
 
+    sql_delete_assignment_by_id = """
+                DELETE FROM assignments WHERE assignment_id=?
+    """
+
 
     @staticmethod
     def create_assignment(params: tuple):
@@ -56,3 +60,7 @@ class AssignmentCRUD:
             val = conn.execute(AssignmentCRUD.sql_assignment_due_date_week, now, then).fetchall()
             return [Assignment(*i) for i in val]
 
+    @staticmethod
+    def remove_assignment_by_id(assignment_id):
+        with sqlite3.connect("storage.db") as conn:
+            conn.execute(AssignmentCRUD.sql_delete_assignment_by_id, assignment_id)

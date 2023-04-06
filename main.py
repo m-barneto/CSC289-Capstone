@@ -118,14 +118,15 @@ async def remove_assignment(req):
 
 async def add_assignment_request(req: Request):
     data = await req.form()
-    assignment = Assignment(0, 0, data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d'), False, None)
+    assignment = Assignment(0, data['course'], data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d'), False, None)
     AssignmentCRUD.create_assignment(assignment.params())
 
     return templates.TemplateResponse('add_assignment.html', {'request': req})
 
 async def remove_assignment_request(req: Request):
     data = await req.form()
-    print(data)
+    for assignment_id in data:
+        AssignmentCRUD.remove_assignment_by_id(assignment_id)
     # assignment = Assignment(0, 0, data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d'), False, None)
     # AssignmentCRUD.create_assignment(assignment.params())
 
