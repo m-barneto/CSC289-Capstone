@@ -121,7 +121,7 @@ async def edit_assignment(req):
 
 async def add_assignment_request(req: Request):
     data = await req.form()
-    assignment = Assignment(0, data['course'], data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d'), False, None)
+    assignment = Assignment(0, data['course'], data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d').strftime('%Y-%m-%d'), False, None)
     AssignmentCRUD.create_assignment(assignment.params())
 
     return templates.TemplateResponse('add_assignment.html', {'request': req})
@@ -142,7 +142,17 @@ async def edit_assignment_request(req: Request):
 
 async def edit_assignment_single_request(req: Request):
     # Apply changes
+    data = await req.form()
+    # Get assignment using id
+    assignment = AssignmentCRUD.get_assignment_by_id(data['assignment_id'])
+    assignment.name = data['assignment_name']
+    assignment.course_id = data['course']
+    assignment.due = datetime.strptime(data['due_date'], '%Y-%m-%d').strftime('%Y-%m-%d')
+    assignment.weight = data['grade_weight']
+    # completed?
 
+    AssignmentCRUD.remove_assignment_by_id(str(assignment.id))
+    AssignmentCRUD.create_assignment(assignment.params())
     # Redirect back to edit assignment selection page
     return templates.TemplateResponse('edit_assignment.html', {'request': req})
 
