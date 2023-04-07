@@ -165,7 +165,8 @@ nav button:hover {
     width: 15%;
 }
 
-#assignment_info {
+#assignment_info,
+#settings_form {
     margin: auto;
     width: 40%;
     padding: 20px;
