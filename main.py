@@ -1,4 +1,5 @@
 from datetime import datetime
+import requests
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse, Response, RedirectResponse
 from starlette.routing import Route
@@ -6,6 +7,7 @@ from starlette.routing import Mount
 from starlette.staticfiles import StaticFiles
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
+from ics import Calendar
 
 
 import sqlite3
@@ -157,10 +159,9 @@ async def edit_assignment_single_request(req: Request):
     return templates.TemplateResponse('edit_assignment.html', {'request': req})
 
 async def import_calendar(req: Request):
-    async with req.form() as form:
-        filename = form["file"].filename
-        contents = await form["file"].read()
-        print(filename)
+    data = await req.form()
+    url = data['url']
+    print(requests.get(url).text)
 
 # Routing
 
