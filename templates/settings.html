@@ -25,7 +25,13 @@
         <div id="settings_form">
             <label>Import URL</label> <br>
             <form id="import_url_form" action="/import_url" method="post">
-                <input type="text" id="import_url" name="import_url" placeholder="URL">
+                <input type="text" id="import_url" name="url" placeholder="URL">
+                <select id="course" name="course">
+                    <option value="none">Select a course</option>
+                    {% for course_id, course in courses.items() %}
+                    <option value="{{course.id}}">{{course.name}}</option>
+                    {% endfor %}
+                </select>
                 <input type="submit" id="submit_button" value="Import Url"></input>
             </form>
             <br>

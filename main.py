@@ -165,10 +165,12 @@ async def edit_assignment_single_request(req: Request):
 async def import_url(req: Request):
     data = await req.form()
     url = data['url']
+    print(data['course'])
+
     cal = Calendar(requests.get(url).text)
-    
     for event in cal.events:
-        print(event)
+        print(event.name)
+        print(event.begin.datetime)
 
     return templates.TemplateResponse('settings.html', {'request': req})
 
