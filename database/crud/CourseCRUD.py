@@ -10,6 +10,16 @@ class CourseCRUD:
     sql_get_course_id_by_name = """
                 SELECT * FROM courses WHERE name=
     """
+
+    sql_create_course = """
+                INSERT INTO 
+                courses(course_id, name, section, professor_name, online, dropped, color) 
+                VALUES(NULL,?,?,?,?,?,?)
+            """
+    
+    sql_delete_course_by_id = """
+                DELETE FROM courses WHERE course_id=?
+    """
     
     @staticmethod
     def get_all_courses():
@@ -37,3 +47,15 @@ class CourseCRUD:
         for course in courses:
             if course.name == course_name:
                 return course.id
+
+    @staticmethod
+    def create_course(params: tuple):
+        with sqlite3.connect("storage.db") as conn:
+            conn.execute(CourseCRUD.sql_create_course, params)
+            conn.commit()
+
+    @staticmethod
+    def remove_course_by_id(course_id: str):
+        with sqlite3.connect("storage.db") as conn:
+            print(course_id)
+            conn.execute(CourseCRUD.sql_delete_course_by_id, course_id)

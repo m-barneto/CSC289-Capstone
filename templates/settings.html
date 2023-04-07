@@ -2,73 +2,76 @@
 <html lang="en">
 
 <head>
-  <title>UI for Group Project</title>
-  <meta charset="UTF-8">
+    <title>UI for Group Project</title>
+    <meta charset="UTF-8">
 </head>
 
 <body>
-  <link href="css/main.css" rel="stylesheet">
-  <header>
-    <div class="container">
-      <img src="logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
-      <nav>
-        <ul id="nav">
-          <li><button onclick="window.location.href='/';">Main Menu</button></li>
-          <li><button onclick="window.location.href='assignments';">Assignments</button></li>
-          <li><button onclick="window.location.href='calendar';">Calendar</button></li>
-          <li><button onclick="window.location.href='settings';">Settings</button></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <div class="main_menu">
-    <h1>Settings</h1>
-    <div id="settings_form">
-      <label>Import URL</label> <br>
-      <form id="import_url_form" action="/import_url" method="post">
-        <input type="text" id="import_url" name="url" placeholder="URL"><br>
-        <select id="course" name="course">
-          <option value="none">Select a course</option>
-          {% for course_id, course in courses.items() %}
-          <option value="{{course.id}}">{{course.name}}</option>
-          {% endfor %}
-        </select><br>
-        <input type="submit" id="submit_button" value="Import Url"></input>
-      </form>
-      <br>
-      <label>Import Database</label>
-      <form id="import_db_form" action="/import_database" method="post" enctype="multipart/form-data">
-        <input type="file" id="hiddenFileUpload" onChange="document.getElementById('import_db_form').submit();"
-          style="display:none;" name="file" />
-        <button type="button" id="submit_button" onclick="document.getElementById('hiddenFileUpload').click();">Import
-          Database</button><br>
-      </form>
-      <br>
-      <form id="export_db_form" action="/database.db" method="get">
-        <label>Export Database</label> <br>
-        <input type="submit" id="submit_button" name="export_database" placeholder="file name" value="Export Database">
-        <br>
-      </form>
-      <form id="add_course_form" action="/add_course" method="post">
-        <label>Add Course</label> <br>
-        <input type="text" id="import_url" name="url" placeholder="Course Name"><br>
-        <input type="submit" id="submit_button" name="add_course" placeholder="Course Name" value="Add Course">
-        <br>
-      </form>
-      <form id="remove_course_form" action="/remove_course" method="post">
-        <label>Remove Course</label> <br>
-        <select id="course" name="course">
-          <option value="none">Select a course</option>
-          {% for course_id, course in courses.items() %}
-          <option value="{{course.id}}">{{course.name}}</option>
-          {% endfor %}
-        </select><br>
-        <input type="submit" id="submit_button" name="remove_course" placeholder="Course Name" value="Remove Course">
-        <br>
-      </form>
+    <link href="css/main.css" rel="stylesheet">
+    <header>
+        <div class="container">
+            <img src="logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
+            <nav>
+                <ul id="nav">
+                    <li><button onclick="window.location.href='/';">Main Menu</button></li>
+                    <li><button onclick="window.location.href='assignments';">Assignments</button></li>
+                    <li><button onclick="window.location.href='calendar';">Calendar</button></li>
+                    <li><button onclick="window.location.href='settings';">Settings</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="main_menu">
+        <h1>Settings</h1>
+        <div id="settings_form">
+            <label>Import URL</label> <br>
+            <form id="import_url_form" action="/import_url" method="post">
+                <input type="text" id="import_url" name="url" placeholder="URL"><br>
+                <select id="course" name="course">
+                    <option value="none">Select a course</option>
+                    {% for course_id, course in courses.items() %}
+                    <option value="{{course.id}}">{{course.name}}</option>
+                    {% endfor %}
+                </select><br>
+                <input type="submit" id="submit_button" value="Import Url"></input>
+            </form>
+            <br>
+            <label>Import Database</label>
+            <form id="import_db_form" action="/import_database" method="post" enctype="multipart/form-data">
+                <input type="file" id="hiddenFileUpload" onChange="document.getElementById('import_db_form').submit();"
+                    style="display:none;" name="file" />
+                <button type="button" id="submit_button"
+                    onclick="document.getElementById('hiddenFileUpload').click();">Import
+                    Database</button><br>
+            </form>
+            <br>
+            <form id="export_db_form" action="/database.db" method="get">
+                <label>Export Database</label> <br>
+                <input type="submit" id="submit_button" name="export_database" placeholder="file name"
+                    value="Export Database">
+                <br>
+            </form>
+            <form id="add_course_form" action="/add_course" method="post">
+                <label>Add Course</label> <br>
+                <input type="text" id="import_url" name="course_name" placeholder="Course Name"><br>
+                <input type="submit" id="submit_button" name="add_course" placeholder="Course Name" value="Add Course">
+                <br>
+            </form>
+            <form id="remove_course_form" action="/remove_course" method="post">
+                <label>Remove Course</label> <br>
+                <select id="course" name="course_id">
+                    <option value="none">Select a course</option>
+                    {% for course_id, course in courses.items() %}
+                    <option value="{{course.id}}">{{course.name}}</option>
+                    {% endfor %}
+                </select><br>
+                <input type="submit" id="submit_button" name="remove_course" placeholder="Course Name"
+                    value="Remove Course">
+                <br>
+            </form>
 
+        </div>
     </div>
-  </div>
 </body>
 
 </html>

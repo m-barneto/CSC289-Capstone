@@ -8,8 +8,11 @@ def populate():
     try:
         # Dummy data to fill the database for testing
 
-        # USER CREATION
         USER_NUM_ENTRIES = 9
+        COURSE_NUM_ENTRIES = 10
+        ASSIGNMENT_NUM_ENTRIES = 15
+
+        # USER CREATION
         user_ids = [i for i in range(1, USER_NUM_ENTRIES)]
         first_name_list = [
             "Jack",
@@ -64,9 +67,10 @@ def populate():
         )
 
         # ASSIGNMENT CREATION
-        ASSIGNMENT_NUM_ENTRIES = 6
         assignment_ids = [i for i in range(1, ASSIGNMENT_NUM_ENTRIES)]
-        course_ids = [i for i in range(1, ASSIGNMENT_NUM_ENTRIES)]
+        course_ids = []
+        for i in range(ASSIGNMENT_NUM_ENTRIES):
+            course_ids.append(random.choice(range(COURSE_NUM_ENTRIES)))
         assignment_names_list = [
             "Homework 1",
             "Homework 2",
@@ -127,7 +131,6 @@ def populate():
         )
 
         # COURSE CREATION
-        COURSE_NUM_ENTRIES = 10
         # id's generated automatically
         course_names_list = [
             "CTS-115: INFORMATION SYSTEMS BUSINESS CONCEPTS",
