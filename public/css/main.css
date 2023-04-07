@@ -172,17 +172,20 @@ nav button:hover {
     padding: 20px;
 }
 
-#assignment_info button {
+#assignment_info button,
+#settings_form button {
     height: 50px;
     width: 100%;
 }
 
-#assignment_info input {
+#assignment_info input,
+#settings_form input {
     height: 20px;
     width: 100%;
 }
 
-#assignment_info label {
+#assignment_info label,
+#settings_form label {
     font-size: 22px;
     font-weight: bold;
 }
