@@ -159,9 +159,10 @@ def populate():
             "Swearingen, Brad J.",
         ]
         color_list = ["FF0000", "0000FF", "FFA500", "FFC0CB", "00FF00", "FFFF00", "8F00FF"]
-        course_names = [
-            random.choice(course_names_list) for _ in range(COURSE_NUM_ENTRIES)
-        ]
+        # course_names = [
+        #     random.choice(course_names_list) for _ in range(COURSE_NUM_ENTRIES)
+        # ]
+        course_names = [course_names_list[i] for i in range(COURSE_NUM_ENTRIES)]
         course_sections = [
             random.choice(course_section_list) for _ in range(COURSE_NUM_ENTRIES)
         ]
