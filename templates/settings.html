@@ -45,13 +45,13 @@
       <br>
       <form id="export_db_form" action="/database.db" method="get">
         <label>Export Database</label> <br>
-        <input type="submit" id="submit_button" name="export_database" placeholder="file name">
+        <input type="submit" id="submit_button" name="export_database" placeholder="file name" value="Export Database">
         <br>
       </form>
       <form id="add_course_form" action="" method="post">
         <label>Add Course</label> <br>
         <input type="text" id="import_url" name="url" placeholder="Course Name">
-        <input type="submit" id="submit_button" name="add_course" placeholder="Course Name">
+        <input type="submit" id="submit_button" name="add_course" placeholder="Course Name" value="Add Course">
         <br>
       </form>
       <form id="remove_course_form" action="" method="post">
@@ -62,7 +62,7 @@
           <option value="{{course.id}}">{{course.name}}</option>
           {% endfor %}
         </select>
-        <input type="submit" id="submit_button" name="remove_course" placeholder="Course Name">
+        <input type="submit" id="submit_button" name="remove_course" placeholder="Course Name" value="Remove Course">
         <br>
       </form>
 
