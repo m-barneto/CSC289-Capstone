@@ -259,3 +259,8 @@ textarea {
 #assignment_info label {
     padding-bottom: 5px;
 }
+
+input[type="checkbox"] {
+    height: 30px;
+    width: 30px;
+}
