@@ -165,7 +165,6 @@ async def edit_assignment_single_request(req: Request):
 async def import_url(req: Request):
     data = await req.form()
     url = data['url']
-    print(data['course'])
 
     cal = Calendar(requests.get(url).text)
     for event in cal.events:
@@ -186,6 +185,21 @@ async def import_database(req: Request):
 async def export_database(req: Request):
     return FileResponse('storage.db')
 
+async def add_course(req: Request):
+    data = await req.form()
+    course_name = data['add_course']
+    print(course_name)
+
+    return templates.TemplateResponse('settings.html', {'request': req})
+
+async def remove_course(req: Request):
+    data = await req.form()
+    course_id = data['remove_course']
+    print(course_id)
+
+    return templates.TemplateResponse('settings.html', {'request': req})
+
+
 # Routing
 
 app = Starlette(debug=True, routes=[
@@ -204,6 +218,9 @@ app = Starlette(debug=True, routes=[
     Route('/import_url', endpoint=import_url, methods=['POST']),
     Route('/import_database', endpoint=import_database, methods=['POST']),
     Route('/database.db', endpoint=export_database, methods=['GET']),
+    
+    Route('/add_course', endpoint=add_course, methods=['POST']),
+    Route('/remove_course', endpoint=remove_course, methods=['POST']),
 
     
     Mount('/', app=StaticFiles(directory='public')),
