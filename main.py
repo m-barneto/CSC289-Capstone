@@ -163,6 +163,8 @@ async def edit_assignment_single_request(req: Request):
 
 
 async def import_url(req: Request):
+    print("URL")
+    return templates.TemplateResponse('settings.html', {'request': req})
     data = await req.form()
     url = data['url']
     cal = Calendar(requests.get(url).text)
@@ -173,6 +175,7 @@ async def import_url(req: Request):
     return templates.TemplateResponse('settings.html', {'request': req})
 
 async def import_database(req: Request):
+    print("database")
     # Open a connection to the db file and copy everything over, 
     async with req.form() as form:
         file = form['file'].file
@@ -182,6 +185,7 @@ async def import_database(req: Request):
     return templates.TemplateResponse('settings.html', {'request': req})
 
 async def export_database(req: Request):
+    print("exporting")
     return templates.TemplateResponse('settings.html', {'request': req})
 
 async def import_file(req: Request):
