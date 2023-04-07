@@ -15,7 +15,7 @@ from sqlite3 import Error
 from database.crud.AssignmentCRUD import AssignmentCRUD
 from database.crud.CourseCRUD import CourseCRUD
 
-from database.models import Assignment
+from database.models import Assignment, Course
 
 from database.pop_db import populate
 
@@ -187,16 +187,19 @@ async def export_database(req: Request):
 
 async def add_course(req: Request):
     data = await req.form()
-    course_name = data['add_course']
-    print(course_name)
-
+    course_name = data['course_name']
+    course = Course(0, course_name, '', '', False, False, '#FF00FF')
+    CourseCRUD.create_course(course.params())
+    
     return templates.TemplateResponse('settings.html', {'request': req})
 
 async def remove_course(req: Request):
     data = await req.form()
-    course_id = data['remove_course']
+    course_id = data['course_id']
     print(course_id)
-
+    print(type(course_id))
+    CourseCRUD.remove_course_by_id(course_id)
+    # Remove all aissgh
     return templates.TemplateResponse('settings.html', {'request': req})
 
 
