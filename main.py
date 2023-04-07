@@ -104,11 +104,11 @@ templates = Jinja2Templates(directory='templates', context_processors=[context])
 async def homepage(req):
     return templates.TemplateResponse('index.html', {'request': req})
 
+async def assignments(req):
+    return templates.TemplateResponse('assignments.html', {'request': req})
+
 async def calendar(req):
     return templates.TemplateResponse('calendar.html', {'request': req})
-
-async def calendar_grid(req):
-    return templates.TemplateResponse('calendar_grid.html', {'request': req})
 
 async def add_assignment(req):
     return templates.TemplateResponse('add_assignment.html', {'request': req})
@@ -190,8 +190,8 @@ async def export_database(req: Request):
 
 app = Starlette(debug=True, routes=[
     Route('/', endpoint=homepage),
+    Route('/assignments', endpoint=assignments),
     Route('/calendar', endpoint=calendar),
-    Route('/calendar_grid', endpoint=calendar_grid),
     Route('/add_assignment', endpoint=add_assignment),
     Route('/remove_assignment', endpoint=remove_assignment),
     Route('/edit_assignment', endpoint=edit_assignment),
@@ -204,6 +204,7 @@ app = Starlette(debug=True, routes=[
     Route('/import_url', endpoint=import_url, methods=['POST']),
     Route('/import_database', endpoint=import_database, methods=['POST']),
     Route('/database.db', endpoint=export_database, methods=['GET']),
+
     
     Mount('/', app=StaticFiles(directory='public')),
 ])
