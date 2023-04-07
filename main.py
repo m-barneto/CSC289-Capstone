@@ -162,13 +162,36 @@ async def edit_assignment_single_request(req: Request):
     return templates.TemplateResponse('edit_assignment.html', {'request': req})
 
 
-
-
-
-async def import_calendar(req: Request):
+async def import_url(req: Request):
     data = await req.form()
     url = data['url']
-    print(requests.get(url).text)
+    cal = Calendar(requests.get(url).text)
+    
+    for event in cal.events:
+        print(event)
+
+    return templates.TemplateResponse('settings.html', {'request': req})
+
+async def import_database(req: Request):
+    # Open a connection to the db file and copy everything over, 
+    async with req.form() as form:
+        file = form['file'].file
+        with open("test.db", "wb") as f:
+            f.write(file)
+        
+    return templates.TemplateResponse('settings.html', {'request': req})
+
+async def export_database(req: Request):
+    return templates.TemplateResponse('settings.html', {'request': req})
+
+async def import_file(req: Request):
+    # Open a connection to the db file and copy everything over, 
+    async with req.form() as form:
+        file = form['file'].file
+        with open("test.db", "wb") as f:
+            f.write(file.read())
+
+    return templates.TemplateResponse('index.html', {'request': req})
 
 # Routing
 
@@ -185,7 +208,10 @@ app = Starlette(debug=True, routes=[
     Route('/remove_assignment.html', endpoint=remove_assignment_request, methods=['POST']),
     Route('/edit_assignment.html', endpoint=edit_assignment_request, methods=['POST']),
     Route('/edit_assignment_single.html', endpoint=edit_assignment_single_request, methods=['POST']),
-    Route('/import_calendar', endpoint=import_calendar, methods=['POST']),
+    Route('/import_url', endpoint=import_url, methods=['POST']),
+    Route('/import_database', endpoint=import_database, methods=['POST']),
+    Route('/export_database', endpoint=export_database, methods=['POST']),
+    Route('/import_calendar', endpoint=import_file, methods=['POST']),
     
     Mount('/', app=StaticFiles(directory='public')),
 ])
