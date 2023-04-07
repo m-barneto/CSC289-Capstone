@@ -22,25 +22,26 @@
   </header>
   <div class="main_menu">
     <h1>Settings</h1>
-    <label>Import URL</label> <br>
-    <form id="import_url" action="/add_assignment.html" method="post">
-      <input type="text" id="import_url" name="import_url" placeholder="URL">
-      <input type="submit" id="submit_button" value="Import Url"></input>
+    <div id="settings_form">
+      <label>Import URL</label> <br>
+      <form id="import_url" action="/add_assignment.html" method="post">
+        <input type="text" id="import_url" name="import_url" placeholder="URL">
+        <input type="submit" id="submit_button" value="Import Url"></input>
+      </form>
       <br>
       <label>Import Database</label> <br>
-      <li>
-        <form id="import" action="/import_calendar" method="post" enctype="multipart/form-data">
-          <input type="file" id="hiddenFileUpload" onChange="document.getElementById('import').submit();"
-            style="display:none;" name="file" />
-          <button type="button" onclick="document.getElementById('hiddenFileUpload').click();">Import Database</button>
-        </form>
-
-      </li>
+      <form id="import" action="/import_calendar" method="post" enctype="multipart/form-data">
+        <input type="file" id="hiddenFileUpload" onChange="document.getElementById('import').submit();"
+          style="display:none;" name="file" />
+        <button type="button" onclick="document.getElementById('hiddenFileUpload').click();">Import Database</button>
+      </form>
       <br>
-      <label>Export Database</label> <br>
-      <input type="text" id="export_database" name="export_database" placeholder="file name">
-      <br>
-    </form>
+      <form>
+        <label>Export Database</label> <br>
+        <input type="text" id="export_database" name="export_database" placeholder="file name">
+        <br>
+      </form>
+    </div>
   </div>
 </body>
 
