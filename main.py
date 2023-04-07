@@ -176,23 +176,13 @@ async def import_database(req: Request):
     # Open a connection to the db file and copy everything over, 
     async with req.form() as form:
         file = form['file'].file
-        with open("test.db", "wb") as f:
-            f.write(file)
+        with open("storage.db", "wb") as f:
+            f.write(file.read())
         
     return templates.TemplateResponse('settings.html', {'request': req})
 
 async def export_database(req: Request):
     return FileResponse('storage.db')
-
-        
-async def import_file(req: Request):
-    # Open a connection to the db file and copy everything over, 
-    async with req.form() as form:
-        file = form['file'].file
-        with open("test.db", "wb") as f:
-            f.write(file.read())
-
-    return templates.TemplateResponse('index.html', {'request': req})
 
 # Routing
 
@@ -212,7 +202,6 @@ app = Starlette(debug=True, routes=[
     Route('/import_url', endpoint=import_url, methods=['POST']),
     Route('/import_database', endpoint=import_database, methods=['POST']),
     Route('/database.db', endpoint=export_database, methods=['GET']),
-    Route('/import_calendar', endpoint=import_file, methods=['POST']),
     
     Mount('/', app=StaticFiles(directory='public')),
 ])
