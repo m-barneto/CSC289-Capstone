@@ -1,7 +1,7 @@
 from datetime import datetime
 import requests
 from starlette.applications import Starlette
-from starlette.responses import JSONResponse, Response, RedirectResponse
+from starlette.responses import JSONResponse, Response, RedirectResponse, FileResponse
 from starlette.routing import Route
 from starlette.routing import Mount
 from starlette.staticfiles import StaticFiles
@@ -163,8 +163,6 @@ async def edit_assignment_single_request(req: Request):
 
 
 async def import_url(req: Request):
-    print("URL")
-    return templates.TemplateResponse('settings.html', {'request': req})
     data = await req.form()
     url = data['url']
     cal = Calendar(requests.get(url).text)
@@ -175,7 +173,6 @@ async def import_url(req: Request):
     return templates.TemplateResponse('settings.html', {'request': req})
 
 async def import_database(req: Request):
-    print("database")
     # Open a connection to the db file and copy everything over, 
     async with req.form() as form:
         file = form['file'].file
@@ -185,9 +182,9 @@ async def import_database(req: Request):
     return templates.TemplateResponse('settings.html', {'request': req})
 
 async def export_database(req: Request):
-    print("exporting")
-    return templates.TemplateResponse('settings.html', {'request': req})
+    return FileResponse('storage.db')
 
+        
 async def import_file(req: Request):
     # Open a connection to the db file and copy everything over, 
     async with req.form() as form:
@@ -214,7 +211,7 @@ app = Starlette(debug=True, routes=[
     Route('/edit_assignment_single.html', endpoint=edit_assignment_single_request, methods=['POST']),
     Route('/import_url', endpoint=import_url, methods=['POST']),
     Route('/import_database', endpoint=import_database, methods=['POST']),
-    Route('/export_database', endpoint=export_database, methods=['POST']),
+    Route('/database.db', endpoint=export_database, methods=['GET']),
     Route('/import_calendar', endpoint=import_file, methods=['POST']),
     
     Mount('/', app=StaticFiles(directory='public')),
