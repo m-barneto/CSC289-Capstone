@@ -67,7 +67,7 @@ class AssignmentCRUD:
     @staticmethod
     def remove_assignment_by_id(assignment_id):
         with sqlite3.connect("storage.db") as conn:
-            conn.execute(AssignmentCRUD.sql_delete_assignment_by_id, assignment_id)
+            conn.execute(AssignmentCRUD.sql_delete_assignment_by_id, (assignment_id,))
 
     @staticmethod
     def get_assignment_by_id(assignment_id):

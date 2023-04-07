@@ -55,7 +55,6 @@ class CourseCRUD:
             conn.commit()
 
     @staticmethod
-    def remove_course_by_id(course_id: str):
+    def remove_course_by_id(course_id):
         with sqlite3.connect("storage.db") as conn:
-            print(course_id)
-            conn.execute(CourseCRUD.sql_delete_course_by_id, course_id)
+            conn.execute(CourseCRUD.sql_delete_course_by_id, (course_id,))
