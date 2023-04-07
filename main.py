@@ -119,6 +119,9 @@ async def remove_assignment(req):
 async def edit_assignment(req):
     return templates.TemplateResponse('edit_assignment.html', {'request': req})
 
+async def settings(req):
+    return templates.TemplateResponse('settings.html', {'request': req})
+
 # Endpoints
 
 async def add_assignment_request(req: Request):
@@ -158,6 +161,10 @@ async def edit_assignment_single_request(req: Request):
     # Redirect back to edit assignment selection page
     return templates.TemplateResponse('edit_assignment.html', {'request': req})
 
+
+
+
+
 async def import_calendar(req: Request):
     data = await req.form()
     url = data['url']
@@ -172,6 +179,7 @@ app = Starlette(debug=True, routes=[
     Route('/add_assignment', endpoint=add_assignment),
     Route('/remove_assignment', endpoint=remove_assignment),
     Route('/edit_assignment', endpoint=edit_assignment),
+    Route('/settings', endpoint=settings),
 
     Route('/add_assignment.html', endpoint=add_assignment_request, methods=['POST']),
     Route('/remove_assignment.html', endpoint=remove_assignment_request, methods=['POST']),
