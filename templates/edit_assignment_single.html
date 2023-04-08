@@ -2,77 +2,77 @@
 <html lang="en">
 
 <head>
-    <title>UI for Group Project</title>
+    <title>Assignment Planner</title>
     <meta charset="UTF-8">
 </head>
 
 <body>
-<link href="css/main.css" rel="stylesheet">
-<header>
-    <div class="container">
-        <img src="logo.png" alt="Temp Assignment Tracker Logo" width="250px" height="70px">
-        <nav>
-            <ul id="nav">
-                <li>
-                    <button onclick="window.location.href='/';">Main Menu</button>
-                </li>
-                <li>
-                    <button onclick="window.location.href='assignments';">Assignments</button>
-                </li>
-                <li>
-                    <button onclick="window.location.href='calendar';">Calendar</button>
-                </li>
-                <li>
-                    <button onclick="window.location.href='settings';">Settings</button>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</header>
-<div class="main_menu">
-    <h1>Edit Assignment</h1>
-    <div>
-        <nav>
-            <ul>
-                <li>
-                    <button onclick="window.location.href='add_assignment';">Add Assignment</button>
-                </li>
-                <li>
-                    <button onclick="window.location.href='edit_assignment';">Edit Assignment</button>
-                </li>
-                <li>
-                    <button onclick="window.location.href='remove_assignment';">Remove Assignment</button>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    <form id="assignment_info" action="/edit_assignment_single.html" method="post">
-        <input type="hidden" value="{{ assignment.id }}" name="assignment_id">
-        <label for="assignment_name">Assignment Name:</label> <br>
-        <input type="text" id="assignment_name" name="assignment_name" placeholder="Assignment Name"
-               value="{{ assignment.name }}" required>
-        <br>
-        <label for="course">Course:</label>
-        <select id="course" name="course" required>
-            <option value="{{ assignment.course_id }}">{{ courses[assignment.course_id].name }}</option>
-            {% for course_id, course in courses.items() if course_id != assignment.course_id %}
+    <link href="css/main.css" rel="stylesheet">
+    <header>
+        <div class="container">
+            <img src="logo.png" alt="Assignment Tracker Logo" width="250px" height="70px">
+            <nav>
+                <ul id="nav">
+                    <li>
+                        <button onclick="window.location.href='/';">Main Menu</button>
+                    </li>
+                    <li>
+                        <button onclick="window.location.href='assignments';">Assignments</button>
+                    </li>
+                    <li>
+                        <button onclick="window.location.href='calendar';">Calendar</button>
+                    </li>
+                    <li>
+                        <button onclick="window.location.href='settings';">Settings</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="main_menu">
+        <h1>Edit Assignment</h1>
+        <div>
+            <nav>
+                <ul>
+                    <li>
+                        <button onclick="window.location.href='add_assignment';">Add Assignment</button>
+                    </li>
+                    <li>
+                        <button onclick="window.location.href='edit_assignment';">Edit Assignment</button>
+                    </li>
+                    <li>
+                        <button onclick="window.location.href='remove_assignment';">Remove Assignment</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <form id="assignment_info" action="/edit_assignment_single.html" method="post">
+            <input type="hidden" value="{{ assignment.id }}" name="assignment_id">
+            <label for="assignment_name">Assignment Name:</label> <br>
+            <input type="text" id="assignment_name" name="assignment_name" placeholder="Assignment Name"
+                value="{{ assignment.name }}" required>
+            <br>
+            <label for="course">Course:</label>
+            <select id="course" name="course" required>
+                <option value="{{ assignment.course_id }}">{{ courses[assignment.course_id].name }}</option>
+                {% for course_id, course in courses.items() if course_id != assignment.course_id %}
                 <option value="{{ course.id }}">{{ course.name }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <label for="due_date">Due Date:</label> <br>
-        <input type="date" id="due_date" name="due_date" value="{{ assignment.due }}" required>
-        <br>
-        <label for="grade_weight">Grade Weight:</label> <br>
-        <input type="text" id="grade_weight" name="grade_weight" placeholder="Grade Weight"
-               value="{{ assignment.weight }}" required>
-        <br>
-        <!-- <label>Completed:</label> <br>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="due_date">Due Date:</label> <br>
+            <input type="date" id="due_date" name="due_date" value="{{ assignment.due }}" required>
+            <br>
+            <label for="grade_weight">Grade Weight:</label> <br>
+            <input type="text" id="grade_weight" name="grade_weight" placeholder="Grade Weight"
+                value="{{ assignment.weight }}" required>
+            <br>
+            <!-- <label>Completed:</label> <br>
             <input type="checkbox" id="completed" name="completed" value="{{assignment.completed}}">
             <br> -->
-        <input type="submit" id="submit_button" value="Apply Changes"></input>
-    </form>
-</div>
+            <input type="submit" id="submit_button" value="Apply Changes"></input>
+        </form>
+    </div>
 </body>
 
 </html>
