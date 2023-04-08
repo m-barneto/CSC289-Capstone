@@ -184,8 +184,8 @@ async def import_url(request: Request):
 
     cal = Calendar(requests.get(url).text)
     for event in cal.events:
-        print(event.name)
-        print(event.begin.datetime)
+        assignment = Assignment(0, data['course'], event.name, '', '1', 0, False, event.begin.datetime.strftime('%Y-%m-%d'), False, 0)
+        AssignmentCRUD.create_assignment(assignment.params())
 
     return templates.TemplateResponse('settings.html', {'request': request})
 
