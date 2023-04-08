@@ -29,6 +29,10 @@ class AssignmentCRUD:
                 SELECT * FROM assignments WHERE assignment_id=?
     """
 
+    sql_remove_assignments_by_course_id = """
+                DELETE FROM assignments WHERE course_id=?
+    """
+
 
     @staticmethod
     def create_assignment(params: tuple):
@@ -74,3 +78,8 @@ class AssignmentCRUD:
         with sqlite3.connect("storage.db") as conn:
             val = conn.execute(AssignmentCRUD.sql_get_assignment_by_id, assignment_id).fetchall()
             return [Assignment(*i) for i in val][0]
+
+    @staticmethod
+    def remove_assignments_by_course_id(course_id):
+        with sqlite3.connect("storage.db") as conn:
+            conn.execute(AssignmentCRUD.sql_remove_assignments_by_course_id, (course_id,))

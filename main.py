@@ -218,7 +218,7 @@ async def remove_course(request: Request):
     data = await request.form()
     course_id = data['course_id']
     CourseCRUD.remove_course_by_id(course_id)
-    # Remove all aissgh
+    AssignmentCRUD.remove_assignments_by_course_id(course_id)
     return templates.TemplateResponse('settings.html', {'request': request})
 
 
