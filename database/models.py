@@ -50,7 +50,7 @@ class Course:
     dropped: bool
     color: str
     def params(self):
-        return self.id, self.name, self.section, self.professor, self.online, self.dropped, self.color
+        return self.name, self.section, self.professor, self.online, self.dropped, self.color
 
 
 @dataclass

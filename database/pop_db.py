@@ -4,12 +4,14 @@ import random
 
 
 def populate():
-    conn = None
     try:
         # Dummy data to fill the database for testing
 
-        # USER CREATION
         USER_NUM_ENTRIES = 9
+        COURSE_NUM_ENTRIES = 10
+        ASSIGNMENT_NUM_ENTRIES = 15
+
+        # USER CREATION
         user_ids = [i for i in range(1, USER_NUM_ENTRIES)]
         first_name_list = [
             "Jack",
@@ -24,7 +26,7 @@ def populate():
             "Wesley",
         ]
         last_name_list = ["Smith", "John", "Jones", "Peters", "Matts", "Brown"]
-        usernames = set([])
+        usernames = set()
         while len(usernames) < USER_NUM_ENTRIES:
             usernames.add(
                 random.choice(first_name_list) + " " + random.choice(last_name_list)
@@ -64,9 +66,9 @@ def populate():
         )
 
         # ASSIGNMENT CREATION
-        ASSIGNMENT_NUM_ENTRIES = 6
-        assignment_ids = [i for i in range(1, ASSIGNMENT_NUM_ENTRIES)]
-        course_ids = [i for i in range(1, ASSIGNMENT_NUM_ENTRIES)]
+        course_ids = []
+        for i in range(ASSIGNMENT_NUM_ENTRIES):
+            course_ids.append(random.randint(1, COURSE_NUM_ENTRIES))
         assignment_names_list = [
             "Homework 1",
             "Homework 2",
@@ -127,7 +129,6 @@ def populate():
         )
 
         # COURSE CREATION
-        COURSE_NUM_ENTRIES = 10
         # id's generated automatically
         course_names_list = [
             "CTS-115: INFORMATION SYSTEMS BUSINESS CONCEPTS",
@@ -189,8 +190,8 @@ def populate():
                 sqlite_user_insert,
                 (
                     0,
-                    "mbarneto",
-                    "1234",
+                    "user",
+                    "password",
                     "email@gmail.com",
                     "9198675309",
                     "programming",
@@ -206,8 +207,8 @@ def populate():
             conn.execute("DELETE FROM assignments")
             sqlite_assignment_insert = """
                 INSERT INTO 
-                assignments(assignment_id, course_id, name, type, weight, priority, completed, due, recurring, notification_id) 
-                VALUES(NULL,?,?,?,?,?,?,?,?,?)
+                assignments(course_id, name, type, weight, priority, completed, due, recurring, notification_id) 
+                VALUES(?,?,?,?,?,?,?,?,?)
             """
             for item in dummy_assignment_data:
                 conn.execute(sqlite_assignment_insert, item)
@@ -217,8 +218,8 @@ def populate():
             conn.execute("DELETE FROM courses")
             sqlite_course_insert = """
                 INSERT INTO
-                courses(course_id, name, section, professor_name, online, dropped, color)
-                VALUES(NULL,?,?,?,?,?,?)
+                courses(name, section, professor_name, online, dropped, color)
+                VALUES(?,?,?,?,?,?)
             """
             for item in dummy_course_data:
                 conn.execute(sqlite_course_insert, item)
