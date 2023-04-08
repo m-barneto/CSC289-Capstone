@@ -98,11 +98,18 @@
                     } else if (currentDay > daysInMonth) {
                         calendarTable += "<td></td>";
                     } else {
+                        let month = date.getMonth() + 1;
+                        if (month < 10) month = '0' + month;
+
+                        let day = currentDay;
+                        if (currentDay < 10) day = '0' + currentDay;
+
                         var today = new Date();
+
                         if (year == today.getFullYear() && month == today.getMonth() + 1 && currentDay == today.getDate()) {
-                            calendarTable += "<td class='today' id='" + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + currentDay + "'><div class='bar'>" + currentDay + "</div>";
+                            calendarTable += "<td class='today' id='" + date.getFullYear() + '-' + month + '-' + day + "'><div class='bar'>" + currentDay + "</div>";
                         } else {
-                            calendarTable += "<td id='" + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + currentDay + "'><div class='bar'>" + currentDay + "</div>";
+                            calendarTable += "<td id='" + date.getFullYear() + '-' + month + '-' + day + "'><div class='bar'>" + currentDay + "</div>";
                         }
                         calendarTable += "</td>";
                         currentDay++;
@@ -113,14 +120,16 @@
             calendarTable += "</tbody>";
             calendarTable += "</table>";
             document.getElementById("calendar").innerHTML = calendarTable;
-
             for (let [key, value] of Object.entries(assignments)) {
+                console.log(value['due']);
                 var td = document.getElementById(value['due']);
                 if (td) {
                     var bar = document.createElement('div');
                     bar.className = 'bar';
                     bar.innerHTML = value['name'];
                     bar.style.backgroundColor = '#' + courses[value['course_id']]['color'];
+                    bar.style.color = '#121212';
+                    bar.style.fontWeight = 'bold';
                     td.appendChild(bar);
                 }
             }

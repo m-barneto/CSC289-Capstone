@@ -107,7 +107,7 @@ def populate():
         # create random 2023 due dates for each assignment
         assignment_due_dates_list = [
             "2023-"
-            + f"03-"
+            + f"04-"
             + f"{random.choice(range(1, 29)):02}"
             for _ in range(ASSIGNMENT_NUM_ENTRIES)
         ]
