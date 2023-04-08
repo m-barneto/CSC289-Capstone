@@ -43,7 +43,7 @@
                 </tr>
                 {% for assignment in assignments %}
                 <tr>
-                    <td><input type="submit" id="submit_button" name="{{assignment.id}}" value="Edit"></input></td>
+                    <td><input type="submit" id="submit_button" name="{{assignment.id}}" value="Edit"></td>
                     <!-- <td><input type="radio" name="{{assignment.id}}"></td> -->
                     <td>{{assignment.name}}</td>
                     <td>{{courses[assignment.course_id].name}}</td>
