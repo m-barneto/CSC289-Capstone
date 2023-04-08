@@ -117,6 +117,8 @@
                 }
                 calendarTable += "</tr>";
             }
+
+            console.log("TTTTTTT");
             calendarTable += "</tbody>";
             calendarTable += "</table>";
             document.getElementById("calendar").innerHTML = calendarTable;
@@ -127,9 +129,11 @@
                     var bar = document.createElement('div');
                     bar.className = 'bar';
                     bar.innerHTML = value['name'];
+                    console.log("AAAAA");
                     bar.style.backgroundColor = '#' + courses[value['course_id']]['color'];
                     bar.style.color = '#121212';
                     bar.style.fontWeight = 'bold';
+                    console.log("EEEEEEEE");
                     td.appendChild(bar);
                 }
             }

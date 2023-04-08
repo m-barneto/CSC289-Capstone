@@ -1,4 +1,5 @@
 from datetime import datetime
+import random
 import requests
 from starlette.applications import Starlette
 from starlette.responses import Response, RedirectResponse, FileResponse
@@ -139,7 +140,7 @@ async def settings(request: Request):
 @requires('authenticated', redirect='login')
 async def add_assignment_request(request: Request):
     data = await request.form()
-    assignment = Assignment(0, data['course'], data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d').strftime('%Y-%m-%d'), False, None)
+    assignment = Assignment(0, data['course'], data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d').strftime('%Y-%m-%d'), False, 0)
     AssignmentCRUD.create_assignment(assignment.params())
 
     return templates.TemplateResponse('add_assignment.html', {'request': request})
@@ -207,7 +208,9 @@ async def export_database(request: Request):
 async def add_course(request: Request):
     data = await request.form()
     course_name = data['course_name']
-    course = Course(0, course_name, '', '', False, False, '#FF00FF')
+    color_list = ["FF0000", "0000FF", "FFA500", "FFC0CB", "00FF00", "FFFF00", "8F00FF"]
+
+    course = Course(0, course_name, '0', 'Cui, Hong', False, False, random.choice(color_list))
     CourseCRUD.create_course(course.params())
     
     return templates.TemplateResponse('settings.html', {'request': request})

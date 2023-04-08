@@ -13,8 +13,8 @@ class CourseCRUD:
 
     sql_create_course = """
                 INSERT INTO 
-                courses(course_id, name, section, professor_name, online, dropped, color) 
-                VALUES(NULL,?,?,?,?,?,?)
+                courses(name, section, professor_name, online, dropped, color) 
+                VALUES(?,?,?,?,?,?)
             """
     
     sql_delete_course_by_id = """
