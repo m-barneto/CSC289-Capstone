@@ -62,3 +62,5 @@ class User:
     phone_number: int
     degree: str
     semester: str
+    def params(self):
+        return self.id, self.username, self.password, self.email, self.phone_number, self.degree, self.semester

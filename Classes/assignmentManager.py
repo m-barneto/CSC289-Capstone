@@ -1,4 +1,5 @@
 from assignment import Assignment
+from assignmentDatabase import AssignmentDatabase
 from notification import Notification
 from datetime import datetime, timedelta
 import csv
@@ -16,7 +17,7 @@ class AssignmentManager:
     ======= Defaults =======
     """
 
-    def __init__(self, in_database):
+    def __init__(self, in_database: AssignmentDatabase):
         """
         The constructor for AssignmentManager.
 
@@ -94,7 +95,7 @@ class AssignmentManager:
     ===== Object Creation =====
     """
 
-    def create_assignment(self, assignment_id, course_id=None, name=None, type=None, weight=None, priority=None, completed=None, due=None, recurring=None, notification_id=None):
+    def create_assignment(self, course_id=None, name=None, type=None, weight=None, priority=None, completed=None, due=None, recurring=None, notification_id=None):
         """
         Utility for creating assignment objects.
 
@@ -114,7 +115,7 @@ class AssignmentManager:
             Assignment (object)
         """
 
-        return Assignment(assignment_id,    # We can probably use len(_assignments) if we never remove assignments.
+        return Assignment(self._find_assignment_id(),    # We can probably use len(_assignments) if we never remove assignments.
                           course_id,
                           name,
                           type,
@@ -125,7 +126,7 @@ class AssignmentManager:
                           recurring,
                           notification_id)
 
-    def create_notification(self, notification_id, sub_assignment_id=None, message=None, delivery_method=None, send_at=None):
+    def create_notification(self, sub_assignment_id=None, message=None, delivery_method=None, send_at=None):
         """
         Utility for creating notification objects.
 
@@ -139,13 +140,29 @@ class AssignmentManager:
             Notification (object)
         """
 
-        n = Notification(notification_id,    # Same comment as create_assignment(); we can probably use len(self._notifications) if we never remove any notifications.
+        n = Notification(self._find_notification_id(),    # Same comment as create_assignment(); we can probably use len(self._notifications) if we never remove any notifications.
                            message,
                            delivery_method,
                            send_at,
                            sub_assignment_id)
         n.send_notification.add_event(self._on_notification_sent)
         return n
+
+    def _find_assignment_id(self):
+        id = 0
+        for assignment in self._assignments:
+            if assignment.get_id() != id:
+                return id
+            id += 1
+        return len(self._assignments)
+
+    def _find_notification_id(self):
+        id = 0
+        for notification in self._notifications:
+            if notification.get_id() != id:
+                return id
+            id += 1
+        return len(self._notificaitons)
 
     """
     Function Section
@@ -179,12 +196,15 @@ class AssignmentManager:
         self._assignments.append(in_assignment)
         self._database.add_row_assignments(in_assignment)
         if not in_assignment.get_completed:
-            self.add_notification(self.create_notification(len(self._notifications)))
+            self.add_notification(self.create_notification())
 
     """
     Function Section
     === Modification ===
     """
+
+    def update_assignment(self, in_assignment):
+        database.update_row_assignments(in_assignment)
 
     def set_repeating_assignment(self, in_assignment, repeats):
         """Sets a given assignment to repeat."""

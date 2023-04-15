@@ -1,6 +1,5 @@
 import time
 from datetime import datetime, timedelta
-from threading import Thread, Event
 
 
 class NotificationDelegate:
@@ -82,11 +81,11 @@ class Notification:
 
         self._id = notification_id
         self._assignment_id = subassignment_id
-        self._frequency = tick_frequency
         self._date = send_date
         self._has_been_sent = False
-        self._tick_thread = Thread(target=self._perform_tick())
-        self._stop_tick_event = Event()
+
+        self._frequency = tick_frequency
+        self._should_tick = True
 
     """
     Function Section
@@ -140,17 +139,16 @@ class Notification:
         To check if the send_date has been reached. There is
         An exit event in case of early shutdown as well.
         """
-        
-        self._tick_thread.start()
 
-    def _perform_tick(self):
+        self._should_tick = True
+        self._perform_tick()
+
+    async def _perform_tick(self):
         """Thread function to call at frequency amount."""
 
-        while True:
+        while self._should_tick:
             time.sleep(self._frequency)
             self._tick()
-            if self._stop_tick_event.is_set():
-                break
 
     def _tick(self, delta_time):
         """Event called to check if notification should be sent out"""
@@ -161,8 +159,7 @@ class Notification:
     def stop_tick(self):
         """Event to stop tick thread."""
 
-        self._stop_tick_event.set()
-        self._tick_thread.join()
+        self._should_tick = False
 
     @NotificationDelegate
     def send_notification(self):

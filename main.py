@@ -21,81 +21,17 @@ import sqlite3
 from sqlite3 import Error
 from database.crud.AssignmentCRUD import AssignmentCRUD
 from database.crud.CourseCRUD import CourseCRUD
+from database.crud.UserCRUD import UserCRUD
 
-from database.models import Assignment, Course
+from database.models import Assignment, Course, User
 
-from database.pop_db import populate
-
-
-def init_db():
-    conn = None
-    try:
-        # Get our db connection
-        conn = sqlite3.connect('storage.db')
-        # Create our tables if they don't already exist
-        # TODO: figure out length limits and fix data type/***attributes***
-        conn.execute("""CREATE TABLE IF NOT EXISTS users (
-            user_id INTEGER PRIMARY KEY,
-            username CHAR[32] UNIQUE,
-            password CHAR[32],
-            email CHAR[255],
-            phone_number CHAR[32],
-            degree CHAR[32],
-            semester CHAR[32]);
-        """)
-
-        conn.execute("""CREATE TABLE IF NOT EXISTS courses (
-            course_id INTEGER PRIMARY KEY,
-            name CHAR[32],
-            section CHAR[32],
-            professor_name CHAR[32],
-            online BOOL,
-            dropped BOOL,
-            color CHAR[6]);
-        """)
-
-        # Shouldn't weight just be based on the type of assignment?
-        conn.execute("""CREATE TABLE IF NOT EXISTS assignments (
-            assignment_id INTEGER PRIMARY KEY,
-            course_id INT,
-            name CHAR[32],
-            type CHAR[32],
-            weight CHAR[32],
-            priority INT,
-            completed BOOL,
-            due DATETIME,
-            recurring BOOL,
-            notification_id INT);
-        """)
-
-        conn.execute("""CREATE TABLE IF NOT EXISTS subassignments (
-            subassignment_id INTEGER PRIMARY KEY,
-            assignment_id INT,
-            name CHAR[32],
-            completed BOOL,
-            due DATETIME,
-            recurring BOOL,
-            notification_id INT);
-        """)
-
-        conn.execute("""CREATE TABLE IF NOT EXISTS notifications (
-            notification_id INTEGER PRIMARY KEY,
-            message TEXT,
-            delivery_method INT,
-            send_at DATETIME,
-            assignment_id INT,
-            subassignment_id INT);
-        """)
-
-    except Error as e:
-        print(e)
-    finally:
-        if conn:
-            conn.close()
+from Classes.assignmentDatabase import AssignmentDatabase
+from Classes.assignmentManager import AssignmentManager
 
 
-init_db()
-populate()
+database = AssignmentDatabase()
+# database.populate() as far as I know, this is only for testing purposes and the actual product will not contain randomized content.
+manager = AssignmentManager(database)
 
 def context(req: Request):
     return {'assignments': AssignmentCRUD.get_all_assignments(), 
@@ -108,8 +44,15 @@ def context(req: Request):
 
 templates = Jinja2Templates(directory='templates', context_processors=[context])
 
+@requires('authenticated', redirect='login')
 async def homepage(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
+
+async def login_user(request: Request):
+    return templates.TemplateResponse('login.html', {'request': request})
+
+async def add_user(request: Request):
+    return templates.TemplateResponse('add_user.html', {'request': request})
 
 @requires('authenticated', redirect='login')
 async def assignments(request: Request):
@@ -137,9 +80,17 @@ async def settings(request: Request):
 
 # Endpoints
 
+async def add_user_request(request: Request):
+    data = await request.form()
+    user = User(1, data['username'], data['password'], data['email'], data['phone_number'], data['degree'], data['semester'])
+    UserCRUD.create_user(user.params())
+    return templates.TemplateResponse('index.html', {'request': request})
+
 @requires('authenticated', redirect='login')
 async def add_assignment_request(request: Request):
     data = await request.form()
+    # assignment = manager.create_assignment(data['course'], data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d').strftime('%Y-%m-%d'), False, 0)
+    # manager.add_assignment(assignment)
     assignment = Assignment(0, data['course'], data['assignment_name'], 0, data['grade_weight'], 0, False, datetime.strptime(data['due_date'], '%Y-%m-%d').strftime('%Y-%m-%d'), False, 0)
     AssignmentCRUD.create_assignment(assignment.params())
 
@@ -149,6 +100,7 @@ async def add_assignment_request(request: Request):
 async def remove_assignment_request(request: Request):
     data = await request.form()
     for assignment_id in data:
+        # manager.remove_assignment_by_id(assignment_id)
         AssignmentCRUD.remove_assignment_by_id(assignment_id)
     return templates.TemplateResponse('remove_assignment.html', {'request': request})
 
@@ -173,6 +125,7 @@ async def edit_assignment_single_request(request: Request):
     assignment.weight = data['grade_weight']
     # completed?
 
+    # manager.update_assignment(assignment)
     AssignmentCRUD.remove_assignment_by_id(str(assignment.id))
     AssignmentCRUD.create_assignment(assignment.params())
     # Redirect back to edit assignment selection page
@@ -265,14 +218,17 @@ middleware = [
 ]
 
 app = Starlette(debug=True, middleware=middleware, routes=[
-    Route('/', endpoint=homepage),
+    Route('/', endpoint=login_user),
+    Route('/home', endpoint=homepage),
     Route('/assignments', endpoint=assignments),
     Route('/calendar', endpoint=calendar),
     Route('/add_assignment', endpoint=add_assignment),
     Route('/remove_assignment', endpoint=remove_assignment),
     Route('/edit_assignment', endpoint=edit_assignment),
+    Route('/add_user', endpoint=add_user),
     Route('/settings', endpoint=settings),
 
+    Route('/add_user.html', endpoint=add_user_request, methods=['Post']),
     Route('/add_assignment.html', endpoint=add_assignment_request, methods=['POST']),
     Route('/remove_assignment.html', endpoint=remove_assignment_request, methods=['POST']),
     Route('/edit_assignment.html', endpoint=edit_assignment_request, methods=['POST']),

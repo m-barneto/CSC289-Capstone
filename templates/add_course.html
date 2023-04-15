@@ -30,41 +30,40 @@
         </div>
     </header>
     <div class="main_menu">
-        <h1>Add Assignment</h1>
+        <h1>Course Actions</h1>
         <div>
             <nav>
                 <ul>
                     <li>
-                        <button onclick="window.location.href='add_assignment';">Add Assignment</button>
+                        <button onclick="window.location.href='add_course';">Add Course</button>
                     </li>
                     <li>
-                        <button onclick="window.location.href='edit_assignment';">Edit Assignment</button>
+                        <button onclick="window.location.href='edit_course';">Edit Course</button>
                     </li>
                     <li>
-                        <button onclick="window.location.href='remove_assignment';">Remove Assignment</button>
+                        <button onclick="window.location.href='remove_course';">Remove Course</button>
                     </li>
                 </ul>
             </nav>
         </div>
-        <form id="assignment_info" action="/add_assignment.html" method="post">
-            <label for="assignment_name">Assignment Name:</label> <br>
-            <input type="text" id="assignment_name" name="assignment_name" placeholder="Assignment Name" required>
+        <form id="add_course_form" action="/add_course" method="post">
+            <label>Add Course</label> <br>
+            <input type="text" id="import_url" name="course_name" placeholder="Course Name" required><br>
+            <input type="submit" id="submit_button_add" name="add_course" placeholder="Course Name" value="Add Course"
+                required>
             <br>
-            <label for="course">Course:</label>
-            <select id="course" name="course" required>
-                <option value="" disabled selected>Select a course</option>
+        </form>
+        <form id="remove_course_form" action="/remove_course" method="post">
+            <label>Remove Course</label> <br>
+            <select id="course" name="course_id" required>
+                <option value="none">Select a course</option>
                 {% for course_id, course in courses.items() %}
-                <option value="{{ course.id }}">{{ course.name }}</option>
+                <option value="{{course.id}}">{{course.name}}</option>
                 {% endfor %}
-            </select>
+            </select><br>
+            <input type="submit" id="submit_button_remove" name="remove_course" placeholder="Course Name"
+                value="Remove Course" required>
             <br>
-            <label for="due_date">Due Date:</label> <br>
-            <input type="date" id="due_date" name="due_date" required>
-            <br>
-            <label for="grade_weight">Grade Weight:</label> <br>
-            <input type="text" id="grade_weight" name="grade_weight" placeholder="Grade Weight" required>
-            <br>
-            <input type="submit" id="submit_button" value="Add Assignment">
         </form>
     </div>
 </body>

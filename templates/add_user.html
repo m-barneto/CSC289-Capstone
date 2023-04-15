@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Assignment Planner</title>
+    <meta charset="UTF-8">
+    <link rel="icon" href="favicon.ico">
+</head>
+
+<body>
+    <link href="css/main.css" rel="stylesheet">
+    <div class="main_menu">
+        <h1>Enter your information</h1>
+        <form id="add_user_info" action="/add_user.html" method="post">
+            <label for="username">Username:</label> <br>
+            <input type="text" id="username" name="username" value="username" required>
+            <label for="password">Password:</label> <br>
+            <input type="text" id="password" name="password" value="password" required>
+            <label for="email">Email:</label> <br>
+            <input type="email" id="email" name="email" value="email@email.com">
+            <label for="phone_number">Phone Number:</label> <br>
+            <input type="tel" placeholder="888 888 8888" pattern="[0-9]{3} [0-9]{3} [0-9]{4}" maxlength="12" id="phone_number" name="phone_number">
+            <label for="degree">Degree:</label> <br>
+            <input type="text" id="degree" name="degree" value="degree">
+            <label for="semester">Semester:</label> <br>
+            <input type="text" id="semester" name="semester" value="semester">
+            <input type="submit" id="submit_button" value="Login"></input>
+        </form>
+        <button onclick="window.location.href='/';">Back to Login</button>
+    </div>
+</body>
+
+</html>

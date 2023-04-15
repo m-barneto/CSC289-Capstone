@@ -67,6 +67,17 @@ class Assignment:
     def get_notification_id(self):
         return self._notification_id
 
+    def params(self):
+        return self._id, \
+               self._course_id, \
+               self._type, \
+               self._weight, \
+               self.priority, \
+               self._completed, \
+               self._due, \
+               self._recurring, \
+               self._notification_id
+
     """
     Function Section
     ==== Mutators ====
